@@ -1,0 +1,11 @@
+{
+  "name": "pi-lab13",
+  "description": "Lab 13 da UC PI",
+  "version": "1.0.0",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mysql": "^2.17.1"
+  },
+  "license": "MIT"
+}
