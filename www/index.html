@@ -1,42 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="pt">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Lab 13</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="styles/style.css" />
-    <script src="scripts/country.js"></script>
-    <script src="scripts/person.js"></script>
-    <script src="scripts/information.js"></script>
-    <script src="scripts/main.js"></script>
+    <meta charset="utf-8">
+    <title>Torneios Sociais</title>
+    <link type="text/css" href="/styles/estilos.css" rel="stylesheet">
 </head>
-
 <body>
-    <nav>
-        <ul class="menu">
-            <li><a id="menuHome" href="javascript: info.showHome();">Home</a></li>
-            <li><a id="menuPerson" href="javascript: info.showPerson();">Person</a></li>
+    <header>
+    <h1>Torneios Sociais</h1>
+    <h3>Os melhores torneios de sempre, à porta de sua casa</h3>
+    </header>
+    <nav id="nav">
+        <ul>
+            <li id="ListaTorneios" href="javascript:info.showListaTorneios();">Lista de Torneios</li>
+            <li id="MeusTorneios" href="javascript:info.showMeusTorneios();">Os Meus Torneios</li>
+            <li id="" href="javascript:info.show();">Menu3</li>
         </ul>
     </nav>
-    <main>
-        <article>
-            <h1 id="headerTitle">Home</h1>
-            <div id="divInformation"></div>
-            <form id="formPerson" action="javascript: info.processingPerson('create');">
-                <input id="id" type="hidden"/>
-                <label for="name">Name:</label>&nbsp;
-                <input id="name" type="text" placeholder="Introduza o nome"><br/>
-                <label for="date">Birth Date:</label>&nbsp;
-                <input id="date" type="date" /><br/>
-                <label for="countries">Country:</label>&nbsp;
-                <select id="countries"></select><br/><br/>
-                <input id="Save" type="submit" value="Save" />
-                <input id="clean" type="reset" value="clean" />
-            </form>
-        </article>
-    </main>
+    <div Id="main">
+        
+    </div>
 </body>
-
 </html>
