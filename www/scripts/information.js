@@ -11,28 +11,22 @@
 */
 function Information(id) {
     this.id = id;
-    this.people = [];
-    this.countries = [];
+    this.torneios = [];
 };
 
 /**
  * coloca a palavra "home" no div titulo e limpa o div informação
  */
 Information.prototype.showHome = function () {
-    document.getElementById("headerTitle").textContent = "Home";
-    document.getElementById("formPerson").style.display = "none";
     replaceChilds(this.id, document.createElement("div"));
 };
 
-/**
- * coloca a palavra "People" no div titulo e cria dinamicamente uma tabela com a informação das pessoas
- */
-Information.prototype.showPerson = function () {
-    document.getElementById("headerTitle").textContent = "People";
-    document.getElementById("formPerson").style.display = "none";
+
+Information.prototype.showTorneio = function () {
+    
     const table = document.createElement("table");
-    table.appendChild(tableLine(new Person(), true));
-    window.info.people.forEach(p => {
+    table.appendChild(tableLine(new Torneio(), true));
+    window.info.torneios.forEach(p => {
         table.appendChild(tableLine(p, false));
     });
 
@@ -42,50 +36,18 @@ Information.prototype.showPerson = function () {
 
     function deletePersonEventHandler() {
         /** @todo Completar */
-        for (const row of table.rows) {
-            const checkBox = row.cells[0].firstChild;
-            const idPerson = row.cells[1].firstChild.nodeValue;
-            if (checkBox && checkBox.checked)
-                info.removePerson(idPerson);
-        }
     }
 
     function newPersonEventHandler() {
         /** @todo Completar */
-        replaceChilds("divTable", document.createElement("div"));
-        document.getElementById("formPerson").action = "javascript: info.processingPerson('create');";
-        document.getElementById("formPerson").style.display = "block";
-        document.getElementById("id").value = "";
-        document.getElementById("name").value = "";
-        document.getElementById("date").value = "";
-        document.getElementById("countries").innerHTML = "";
-        for (const c of info.countries)
-        document.getElementById("countries").options.add(new Option(c.name, c.id));
+
     }
 
     function updatePersonEventHandler() {
         /** @todo Completar */
-        let idPerson = 0;
-        for (const row of table.rows) {
-            const checkBox = row.cells[0].firstChild;
-            if (checkBox && checkBox.checked) {
-                idPerson = parseInt(row.cells[1].firstChild.nodeValue);
-                break;
-            }
-        }
-        replaceChilds("divTable", document.createElement("div"));
-        document.getElementById("formPerson").action = "javascript: info.processingPerson('update');";
-        document.getElementById("formPerson").style.display = "block";
-        document.getElementById("id").value = idPerson;
-        const person = info.people.find(i => i.id == idPerson);
-        document.getElementById("name").value = person.name;
-        document.getElementById("date").value = person.birthDate;
-        const idCountry = person.idCountry;
-        for (const c of info.countries) {
-            document.getElementById("countries").options.add(new Option(c.name, c.id));
-            if (c.id === idCountry) document.getElementById("countries").selectedIndex = info.countries.indexOf(c);
-        }
+
     }
+
     createButton(divTable, newPersonEventHandler, "New Person");
     createButton(divTable, deletePersonEventHandler, "Delete Person");
     createButton(divTable, updatePersonEventHandler, "Update Person");
@@ -95,31 +57,14 @@ Information.prototype.showPerson = function () {
 /**
  * Função que que tem como principal objetivo solicitar ao servidor NODE.JS o recurso person através do verbo GET, usando pedidos assincronos e JSON
  */
-Information.prototype.getPerson = function () {
+Information.prototype.getTorneio = function () {
     const xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
-    xhr.open('GET', '/person');
+    xhr.open('GET', '/torneio');
     xhr.onreadystatechange = function () {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-            this.response.person.forEach(p => {
-                window.info.people.push(p);
-            });
-        }
-    };
-    xhr.send();
-};
-
-/**
- * Função que que tem como principal objetivo solicitar ao servidor NODE.JS o recurso país através do verbo GET, usando pedidos assincronos e JSON
-  */
-Information.prototype.getCountry = function () {
-    const xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
-    xhr.open("GET", "/country");
-    xhr.onreadystatechange = function () {
-        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-            this.response.country.forEach(function (current) {
-                window.info.countries.push(current);
+            this.response.torneio.forEach(p => {
+                window.info.torneios.push(p);
             });
         }
     };

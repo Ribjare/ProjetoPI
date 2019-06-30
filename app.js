@@ -28,8 +28,10 @@ app.get('/torneio/:id/jogo', requestHandlers.getJogosFromTorneio);
 app.get("/torneio/:id/equipa", requestHandlers.getEquipaFromTorneio);
 
 //to get games per team
+app.get("/jogo/equipa/:id",requestHandlers.getGamesPerTeam);
 
 //to get players of a team
+app.get("/jogador/equipa/:id", requestHandlers.getJogadorPerTeam);
 
 //to create a player
 app.post("/jogador", requestHandlers.createUpdateJogador);
@@ -49,7 +51,7 @@ app.put("/jogador/:id", requestHandlers.createUpdateJogador);
 app.put("/equipa/:id", requestHandlers.createUpdateEquipa);
 
 //to update a tornament
-app.put("/torneio/:id");
+app.put("/torneio/:id", requestHandlers.createUpdateTorneio);
 
 //to update a game
 

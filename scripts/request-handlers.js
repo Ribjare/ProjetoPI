@@ -257,7 +257,45 @@ function removeJogador(req, res){
     });
 }
 
+function getJogadorPerTeam(req, res){
+    let idEquipa = req.params.id;
+    let connection = mysql.createConnection(options);
+    connection.connect();
+    let query = "SELECT j.id, j.nome, j.birthDate, j.nTelemovel ";
+    query += "from Jogador j ";
+    query += "join equipa e on j.idEquipa = e.id ";
+    query += "where e.id = ?";
 
+    connection.query(query, idEquipa, function (err, rows) {
+        if (err) {
+            res.json({ "message": "Error", "error": err });
+        } else {
+            res.json({ "message": "Success", "equipa": rows });
+        }
+    });
+}
+
+function getGamesPerTeam(req, res){
+    let idEquipa = req.params.id;
+    let connection = mysql.createConnection(options);
+    connection.connect();
+    let query = "SELECT j.id, j.dataJogo, e.nome, e2.nome ";
+    query += "from jogo j ";
+    query += "join equipa e on e.id=j.equipa1 "; 
+    query += "join equipa e2 on e2.id=j.equipa2 ";
+    query += "where e.id=? or e2.id=?"
+
+    connection.query(query, idEquipa, idEquipa, function (err, rows) {
+        if (err) {
+            res.json({ "message": "Error", "error": err });
+        } else {
+            res.json({ "message": "Success", "equipa": rows });
+        }
+    });
+    
+}
+module.exports.getGamesPerTeam=getGamesPerTeam;
+module.exports.getJogadorPerTeam=getJogadorPerTeam;
 
 module.exports.getJogador = getJogador;
 module.exports.getTorneio = getTorneio;

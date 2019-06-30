@@ -7,8 +7,8 @@
  */
 window.onload = function (event) {
     var info = new Information("divInformation");
-    info.getPerson();
-    info.getCountry();
+    info.getTorneio();
+    console.log(info.torneios);
     window.info = info;
 };
 
