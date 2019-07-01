@@ -34,23 +34,35 @@ Information.prototype.showTorneio = function () {
     divTable.setAttribute("id", "divTable");
     divTable.appendChild(table);
 
-    function deletePersonEventHandler() {
+    function deleteTornamentEventHandler() {
         /** @todo Completar */
+        for(const row of table.rows){
+            const checkBock = row.cells[0].firstChild;
+            const id = parseInt(row.cells[1].firstChild.nodeValue);
+            if(checkBock && checkBock.checked){
+                self.removeTorneio(id);
+            }
+        }
     }
 
-    function newPersonEventHandler() {
+    function newTornamentEventHandler() {
         /** @todo Completar */
 
     }
 
-    function updatePersonEventHandler() {
+    function updateTornamentEventHandler() {
         /** @todo Completar */
 
     }
 
-    createButton(divTable, newPersonEventHandler, "New Person");
-    createButton(divTable, deletePersonEventHandler, "Delete Person");
-    createButton(divTable, updatePersonEventHandler, "Update Person");
+    function selectTornamentEventHandler(){
+        
+    }
+
+    createButton(divTable, newTornamentEventHandler, "New Torneio");
+    createButton(divTable, deleteTornamentEventHandler, "Delete Torneio");
+    createButton(divTable, updateTornamentEventHandler, "Update Torneio");
+    createButton(divTable, selectTornamentEventHandler, "Select Torneio");
     replaceChilds(this.id, divTable);
 };
 
@@ -74,14 +86,14 @@ Information.prototype.getTorneio = function () {
 /**
  * Função que apaga o recurso pessoa com ym pedido ao NODE.JS através do verbo DELETE, usando pedidos assincronos e JSON
   */
-Information.prototype.removePerson = function (id) {
+Information.prototype.removeTorneio = function (id) {
     /** @todo Completar */
     const xhr = new XMLHttpRequest();
-    xhr.open('DELETE', '/person/' + id);
+    xhr.open('DELETE', '/torneio/' + id);
     xhr.onreadystatechange = function () {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-            info.people.splice(info.people.findIndex(i => i.id === id), 1);
-            info.showPerson();
+            info.torneios.splice(info.torneios.findIndex(i => i.id === id), 1);
+            info.showTorneio();
         }
     };
     xhr.send();

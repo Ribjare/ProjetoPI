@@ -16,3 +16,17 @@ function Torneio(id, name, modalidade, tipo) {
     this.equipas = []; //as equipas que participam no torneio
     this.jogos = []; // os jogos que o torneio tem
 };
+
+Torneio.prototype.getEquipa = function () {
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
+    xhr.open('GET', '/torneio/' + this.id + '/equipa');
+    xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            this.response.equipa.forEach(p => {
+                this.equipas.push(p);
+            });
+        }
+    };
+    xhr.send();
+};
