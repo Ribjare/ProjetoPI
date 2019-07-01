@@ -59,10 +59,10 @@ Information.prototype.showTorneio = function () {
         
     }
 
-    createButton(divTable, newTornamentEventHandler, "New Torneio");
-    createButton(divTable, deleteTornamentEventHandler, "Delete Torneio");
-    createButton(divTable, updateTornamentEventHandler, "Update Torneio");
-    createButton(divTable, selectTornamentEventHandler, "Select Torneio");
+    createButton(divTable, newTornamentEventHandler, "Novo Torneio");
+    createButton(divTable, deleteTornamentEventHandler, "Apagar Torneio");
+    createButton(divTable, updateTornamentEventHandler, "Atualizar Torneio");
+    createButton(divTable, selectTornamentEventHandler, "Selecionar Torneio");
     replaceChilds(this.id, divTable);
 };
 

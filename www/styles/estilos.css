@@ -31,6 +31,17 @@ li{
     margin-right: 80%;
     
 }
+#divtable{
+  display: flex;
+  justify-content: center;
+  background-color: aqua;  
+}
+
+#divInformation{
+display: flex;
+flex-direction: column;
+align-content: flex-end;
+}
 
 #mensagemErro {
     font-size: 1.2em;
