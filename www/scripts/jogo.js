@@ -8,7 +8,7 @@
 * @param {String} modalidade - modalidade do torneio
 * @param {String} tipo - tipo do torneio
 */
-function jogo(id, dataJogo, equipa1, equipa2) {
+function Jogo(id, dataJogo, equipa1, equipa2) {
     this.id = id;
     this.dataJogo = dataJogo;
     this.equipa1 = equipa1;

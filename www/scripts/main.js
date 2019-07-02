@@ -8,7 +8,8 @@
 window.onload = function (event) {
     var info = new Information("divInformation");
     info.getTorneio();
-    console.log(info.torneios);
+    info.getModalidades();
+    info.getTipos();
     window.info = info;
 };
 

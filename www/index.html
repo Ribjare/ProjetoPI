@@ -25,7 +25,21 @@
     </nav>
     <main>
         <div id="divInformation"></div>
-        
+        <form id="formTorneio" >
+            <input id="idTorneio" type="hidden">
+            <label for="name">Nome do Torneio:</label>
+            <input id="nomeTorneio" type="text">
+            <label for="modalidade">Modalidade</label>
+            <select id="modalidadeTorneio"></select>
+            <label for="tipo">Tipo</label>
+            <select id="tipoTorneio"></select>
+            <input id="capacidadeAtual" type="hidden">
+            <label for="capacidadeMax">Capacidade Maxima</label>
+            <input id="capacidadeMaxTorneio" type="number">
+
+            <input id="Save" type="submit" value="Save">
+            <input id="clean" type="reset" value="Clean">
+        </form>
     </main>
 </body>
 </html>

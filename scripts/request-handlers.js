@@ -27,7 +27,7 @@ function getJogador(req, res) {
 function getTorneio(req, res) {
     let connection = mysql.createConnection(options);
     connection.connect();
-    let query = "SELECT id, name, modalidade, tipoTorneio FROM torneio";
+    let query = "SELECT id, name, modalidade, tipoTorneio, capacidadeAtual, capacidadeMax FROM torneio";
     connection.query(query, function (err, rows) {
         if (err) {
             res.json({ "message": "Error", "error": err });
@@ -66,7 +66,7 @@ function getModalidade(req, res){
         if (err) {
             res.json({ "message": "Error", "error": err });
         } else {
-            res.json({ "message": "Success", "equipa": rows });
+            res.json({ "message": "Success", "modalidade": rows });
         }
     });
 }
@@ -83,7 +83,7 @@ function getTipoTorneio(req, res){
         if (err) {
             res.json({ "message": "Error", "error": err });
         } else {
-            res.json({ "message": "Success", "equipa": rows });
+            res.json({ "message": "Success", "tipo": rows });
         }
     });
 }
@@ -114,7 +114,8 @@ function getJogosFromTorneio(req, res){
     let idTorneio = req.params.id;
     let connection = mysql.createConnection(options);
     connection.connect();
-    let query = "SELECT Jogo.id, e1.nome as Equipa1, e2.nome as Equipa2, torneio.name as NomeTorneio FROM Jogo ";
+    let query = "SELECT Jogo.id, Jogo.dataJogo, e1.nome as equipa1, e2.nome as equipa2, torneio.name as NomeTorneio "
+    query += "FROM Jogo ";
     query += "join torneioequipa on Jogo.id = torneioequipa.idEquipa ";
     query += "join Torneio on torneio.id = torneioequipa.idTorneio ";
     query += "join equipa e1 on e1.id=jogo.equipa1 "; 
@@ -179,10 +180,11 @@ function createUpdateTorneio(req, res){
     let name = req.body.name;
     let modalidade = req.body.modalidade;
     let torneio = req.body.tipoTorneio;
-    let sql = (req.method === 'PUT') ? "UPDATE Torneio SET name = ?, modalidade = ?, tipoTorneio=? WHERE id = ?" : "INSERT INTO Torneio(name, modalidade, tipoTorneio) VALUES (?,?,?)";
+    let capMax = req.body.capacidadeMax;
+    let sql = (req.method === 'PUT') ? "UPDATE Torneio SET name = ?, modalidade = ?, tipoTorneio=?, capacidadeMax=? WHERE id = ?" : "INSERT INTO Torneio(name, modalidade, tipoTorneio, capacidadeMax) VALUES (?,?,?,?)";
     connection.connect(function (err) {
         if (err) throw err;
-        connection.query(sql, [name, modalidade, torneio, req.params.id], function (err, rows) {
+        connection.query(sql, [name, modalidade, torneio, capMax, req.params.id], function (err, rows) {
             if (err) {
                 res.sendStatus(500);
             } else {

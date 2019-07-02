@@ -9,6 +9,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("www"));
 
 // Commands
+app.get('/modalidades', requestHandlers.getModalidade);
+
+app.get('/tipos', requestHandlers.getTipoTorneio);
+
 //to get all players
 app.get('/jogador', requestHandlers.getJogador);
 

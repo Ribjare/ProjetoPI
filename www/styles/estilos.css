@@ -1,46 +1,58 @@
 ﻿body {
     font-family: Arial, Helvetica, sans-serif;
-    background-color: rgb(241, 240, 240);  
+    background-color: rgb(241, 240, 240);
 }
-header{
+
+header {
     background-color: rgb(69, 95, 6);
-    padding:20px;
+    padding: 20px;
 }
-h1{
+
+h1 {
     display: flex;
     justify-content: center
 }
-h3{
+
+h3 {
     display: flex;
     justify-content: center
 }
-li{
+
+li {
     list-style: none;
     letter-spacing: 2px;
     padding: 10px;
     border-style: solid;
     border-color: black;
     background-color: rgb(221, 220, 148);
-    
-  }
+
+}
+
 #nav {
     display: flex;
     justify-content: flex-start;
-    flex-direction: column;
+    flex-direction: row;
     font-weight: normal;
-    margin-right: 80%;
-    
-}
-#divtable{
-  display: flex;
-  justify-content: center;
-  background-color: aqua;  
+
 }
 
-#divInformation{
-display: flex;
-flex-direction: column;
-align-content: flex-end;
+#divTable {
+    display: flex;
+    justify-content: center;
+    background-color: aqua;
+}
+
+table,
+th,
+td {
+    border: 1px solid black;
+}
+
+#divInformation {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-end;
+    background-color: red;
 }
 
 #mensagemErro {
@@ -56,4 +68,8 @@ align-content: flex-end;
 
 .resultado {
     font-weight: bold;
+}
+
+#formTorneio {
+    display: none;
 }
