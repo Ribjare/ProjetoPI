@@ -41,7 +41,7 @@ function getTorneio(req, res) {
  * @param {*} req 
  * @param {*} res 
  */
-function getEquipa(req, res){
+function getEquipa(req, res) {
     let connection = mysql.createConnection(options);
     connection.connect();
     let query = "SELECT id, nome FROM equipa";
@@ -58,7 +58,7 @@ function getEquipa(req, res){
  * @param {*} req 
  * @param {*} res 
  */
-function getModalidade(req, res){
+function getModalidade(req, res) {
     let connection = mysql.createConnection(options);
     connection.connect();
     let query = "SELECT id, modalidade FROM modalidade";
@@ -75,7 +75,7 @@ function getModalidade(req, res){
  * @param {*} req 
  * @param {*} res 
  */
-function getTipoTorneio(req, res){
+function getTipoTorneio(req, res) {
     let connection = mysql.createConnection(options);
     connection.connect();
     let query = "SELECT id, tipo FROM TipoTorneio";
@@ -93,7 +93,7 @@ function getTipoTorneio(req, res){
  * @param {*} req 
  * @param {*} res 
  */
-function getJogos(req, res){
+function getJogos(req, res) {
     let connection = mysql.createConnection(options);
     connection.connect();
     let query = "SELECT id, DATE_FORMAT(birthDate, '%Y-%m-%d') as birthDate, equipa1, equipa2 FROM Jogo";
@@ -110,7 +110,7 @@ function getJogos(req, res){
  * @param {*} req 
  * @param {*} res 
  */
-function getJogosFromTorneio(req, res){
+function getJogosFromTorneio(req, res) {
     let idTorneio = req.params.id;
     let connection = mysql.createConnection(options);
     connection.connect();
@@ -118,7 +118,7 @@ function getJogosFromTorneio(req, res){
     query += "FROM Jogo ";
     query += "join torneioequipa on Jogo.id = torneioequipa.idEquipa ";
     query += "join Torneio on torneio.id = torneioequipa.idTorneio ";
-    query += "join equipa e1 on e1.id=jogo.equipa1 "; 
+    query += "join equipa e1 on e1.id=jogo.equipa1 ";
     query += "join equipa e2 on e2.id=jogo.equipa2 where torneio.id = ? ";
 
     connection.query(query, idTorneio, function (err, rows) {
@@ -134,7 +134,7 @@ function getJogosFromTorneio(req, res){
  * @param {*} req 
  * @param {*} res 
  */
-function getEquipaFromTorneio(req, res){
+function getEquipaFromTorneio(req, res) {
     let idTorneio = req.params.id;
     let connection = mysql.createConnection(options);
     connection.connect();
@@ -156,7 +156,7 @@ function getEquipaFromTorneio(req, res){
  * Creates or updates a player
  * //maybe criar uma equipa automaticamente se nao existir???
  */
-function createUpdateJogador(req, res){
+function createUpdateJogador(req, res) {
     let connection = mysql.createConnection(options);
     let name = req.body.name;
     let birthday = req.body.birthDate;
@@ -175,7 +175,7 @@ function createUpdateJogador(req, res){
     });
 }
 
-function createUpdateTorneio(req, res){
+function createUpdateTorneio(req, res) {
     let connection = mysql.createConnection(options);
     let name = req.body.name;
     let modalidade = req.body.modalidade;
@@ -193,9 +193,7 @@ function createUpdateTorneio(req, res){
         });
     });
 }
-module.exports.createUpdateTorneio=createUpdateTorneio;
-
-function deleteTorneio(req, res){
+function deleteTorneio(req, res) {
     let query = 'DELETE FROM torneio WHERE id = ?';
     let connection = mysql.createConnection(options);
     connection.connect(function (err) {
@@ -209,15 +207,32 @@ function deleteTorneio(req, res){
         });
     });
 }
-module.exports.deleteTorneio=deleteTorneio;
 
-function createUpdateEquipa(req, res){
+function createUpdateEquipa(req, res) {
     let connection = mysql.createConnection(options);
     let name = req.body.name;
-    let sql = (req.method === 'PUT') ? "UPDATE equipa SET name = ? WHERE id = ?" : "INSERT INTO Equipa(name) VALUES (?)";
+    let sql = (req.method === 'PUT') ? "UPDATE equipa SET nome = ? WHERE id = ?" : "INSERT INTO equipa(nome) VALUES (?)";
     connection.connect(function (err) {
         if (err) throw err;
         connection.query(sql, [name, req.params.id], function (err, rows) {
+            if (err) {
+                console.log(err);
+                res.sendStatus(500);
+            } else {
+                res.send(rows);
+            }
+        });
+    });
+}
+
+function joinEquipaTorneio(req, res) {
+    let connection = mysql.createConnection(options);
+    let idTorneio = req.params.idTorneio;
+    let idEquipa = req.params.idEquipa;
+    let sql = "INSERT INTO TorneioEquipa(idEquipa, idTorneio) VALUES (?,?)";
+    connection.connect(function (err) {
+        if (err) throw err;
+        connection.query(sql, [idEquipa, idTorneio], function (err, rows) {
             if (err) {
                 res.sendStatus(500);
             } else {
@@ -226,9 +241,10 @@ function createUpdateEquipa(req, res){
         });
     });
 }
-module.exports.createUpdateEquipa=createUpdateEquipa;
 
-function deleteEquipa(req, res){
+module.exports.joinEquipaTorneio = joinEquipaTorneio;
+
+function deleteEquipa(req, res) {
     let query = 'DELETE FROM equipa WHERE id = ?';
     let connection = mysql.createConnection(options);
     connection.connect(function (err) {
@@ -242,9 +258,9 @@ function deleteEquipa(req, res){
         });
     });
 }
-module.exports.deleteEquipa=deleteEquipa;
+module.exports.deleteEquipa = deleteEquipa;
 
-function removeJogador(req, res){
+function removeJogador(req, res) {
     let query = 'DELETE FROM jogador WHERE id = ?';
     let connection = mysql.createConnection(options);
     connection.connect(function (err) {
@@ -259,7 +275,7 @@ function removeJogador(req, res){
     });
 }
 
-function getJogadorPerTeam(req, res){
+function getJogadorPerTeam(req, res) {
     let idEquipa = req.params.id;
     let connection = mysql.createConnection(options);
     connection.connect();
@@ -277,13 +293,13 @@ function getJogadorPerTeam(req, res){
     });
 }
 
-function getGamesPerTeam(req, res){
+function getGamesPerTeam(req, res) {
     let idEquipa = req.params.id;
     let connection = mysql.createConnection(options);
     connection.connect();
     let query = "SELECT j.id, j.dataJogo, e.nome, e2.nome ";
     query += "from jogo j ";
-    query += "join equipa e on e.id=j.equipa1 "; 
+    query += "join equipa e on e.id=j.equipa1 ";
     query += "join equipa e2 on e2.id=j.equipa2 ";
     query += "where e.id=? or e2.id=?"
 
@@ -294,10 +310,14 @@ function getGamesPerTeam(req, res){
             res.json({ "message": "Success", "equipa": rows });
         }
     });
-    
+
 }
-module.exports.getGamesPerTeam=getGamesPerTeam;
-module.exports.getJogadorPerTeam=getJogadorPerTeam;
+module.exports.getGamesPerTeam = getGamesPerTeam;
+module.exports.getJogadorPerTeam = getJogadorPerTeam;
+module.exports.createUpdateEquipa = createUpdateEquipa;
+
+module.exports.createUpdateTorneio = createUpdateTorneio;
+module.exports.deleteTorneio = deleteTorneio;
 
 module.exports.getJogador = getJogador;
 module.exports.getTorneio = getTorneio;
@@ -306,6 +326,6 @@ module.exports.getModalidade = getModalidade;
 module.exports.getTipoTorneio = getTipoTorneio;
 module.exports.getJogos = getJogos
 module.exports.getJogosFromTorneio = getJogosFromTorneio;
-module.exports.getEquipaFromTorneio=getEquipaFromTorneio;
+module.exports.getEquipaFromTorneio = getEquipaFromTorneio;
 module.exports.createUpdateJogador = createUpdateJogador;
-module.exports.removeJogador=removeJogador;
+module.exports.removeJogador = removeJogador;

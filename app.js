@@ -46,6 +46,9 @@ app.post("/equipa", requestHandlers.createUpdateEquipa);
 //to create a tornament
 app.post("/torneio", requestHandlers.createUpdateTorneio);
 
+//to a team join a tornament
+app.post("/torneio/:idTorneio/equipa/:idEquipa", requestHandlers.joinEquipaTorneio);
+
 //to create a game
 
 //to update a player

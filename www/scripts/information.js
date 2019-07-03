@@ -27,6 +27,8 @@ Information.prototype.showHome = function () {
 
 
 Information.prototype.showTorneio = function () {
+    document.getElementById('formTorneio').style.display = 'none';
+
     const table = document.createElement("table");
     table.appendChild(tableLine(new Torneio(), true));
     window.info.torneios.forEach(p => {
@@ -109,7 +111,7 @@ Information.prototype.showTorneio = function () {
                 break;
             }
         }
-        if(idTorneio){
+        if (idTorneio) {
             self.showTorneioDetalhes(idTorneio);
         }
     }
@@ -121,20 +123,36 @@ Information.prototype.showTorneio = function () {
     replaceChilds(this.id, divTable);
 };
 
-Information.prototype.showTorneioDetalhes = function(id){
-    console.log(this.torneios.jogos);
+Information.prototype.showTorneioDetalhes = function (id) {
+    console.log(this.torneios[id].jogos);
     const table = document.createElement("table");
     table.appendChild(tableLine(new Jogo(), true));
     window.info.torneios[id].jogos.forEach(p => {
         table.appendChild(tableLine(p, false));
     });
 
+    const table2 = document.createElement('table');
+    table2.appendChild(tableLine(new Equipa(), true));
+    window.info.torneios[id].equipas.forEach(p => {
+        table2.appendChild(tableLine(p, false));
+    });
+
     var self = this;
     const divTable = document.createElement("divTable");
     divTable.setAttribute("id", "divTable");
+    let labelJogos = document.createElement("h3");
+    labelJogos.innerHTML = "Jogos";
+    divTable.appendChild(labelJogos);
     divTable.appendChild(table);
 
-    function deleteJogoEventHandler() {
+    const divTable2 = document.createElement('divTable');
+    divTable2.setAttribute('id', 'divTable2');
+    let labelEquipas = document.createElement("h3");
+    labelEquipas.innerHTML = "Equipas";
+    divTable2.appendChild(labelEquipas);
+    divTable2.appendChild(table2);
+
+    function deleteTeamEventHandler() {
         /** @todo Completar */
         for (const row of table.rows) {
             const checkBock = row.cells[0].firstChild;
@@ -146,66 +164,25 @@ Information.prototype.showTorneioDetalhes = function(id){
         }
     }
 
-    function newJogoEventHandler() {
+    function newTeamEventHandler() {
         /** @todo Completar */
-        replaceChilds('divTable', document.createElement('div')); //limpar a table
-        document.getElementById('formTorneio').action = 'javascript:info.processingTorneio("create");';
-        document.getElementById('formTorneio').style.display = 'block';
-        document.getElementById('formTorneio').reset();
-        document.getElementById('modalidadeTorneio').innerHTML = '';
-        for (const c of self.modalidades) {
-            document.getElementById('modalidadeTorneio').options.add(new Option(c.modalidade, c.id));
-        }
-        document.getElementById('tipoTorneio').innerHTML = '';
-        for (const c of self.tipos) {
-            document.getElementById('tipoTorneio').options.add(new Option(c.tipo, c.id));
-        }
-    }
-
-    function updateJogoEventHandler() {
-        /** @todo Completar */
-        let idTorneio = null;
-        for (const row of table.rows) {
-            const checkBock = row.cells[0].firstChild;
-            if (checkBock && checkBock.checked) {
-                idTorneio = parseInt(row.cells[1].firstChild.nodeValue);
-                break;
-            }
-        }
-        if (idTorneio) {
-            replaceChilds('divTable', document.createElement('div'));
-            document.getElementById('formTorneio').action = 'javascript:info.processingTorneio("update");';
-            document.getElementById('formTorneio').style.display = 'block';
-            document.getElementById('formTorneio').reset();
-            document.getElementById('idTorneio').value = idTorneio;
-            const torneio = self.torneios.find(i => i.id === idTorneio);
-            document.getElementById('nomeTorneio').value = torneio.name;
-            for (const c of self.modalidades) {
-                document.getElementById('modalidadeTorneio').options.add(new Option(c.modalidade, c.id));
-                if (c.id === torneio.id) {
-                    document.getElementById('modalidadeTorenio').selectedIndex = self.modalidades.indexOf(c);
-                }
-            }
-            document.getElementById('tipoTorneio').innerHTML = '';
-            for (const c of self.tipos) {
-                document.getElementById('tipoTorneio').options.add(new Option(c.tipo, c.id));
-            }
-            document.getElementById('capacidadeMaxTorneio').value = torneio.capacidadeMaxima;
-
-        }
-
+        replaceChilds('daiv', document.createElement('div')); //limpar a table
+        document.getElementById('formEquipa').action = 'javascript:info.processingEquipa(' + id + ');';
+        document.getElementById('formEquipa').style.display = 'block';
+        document.getElementById('formEquipa').reset();
 
     }
 
-    function selectJogoEventHandler() {
 
-    }
+    createButton(divTable2, newTeamEventHandler, "Inscrever Equipa");
+    createButton(divTable2, deleteTeamEventHandler, "Apagar Equipa");
+    // createButton(divTable2, selectJogoEventHandler, "Selecionar Equipa");
 
-    createButton(divTable, newJogoEventHandler, "Novo Equipa");
-    createButton(divTable, deleteJogoEventHandler, "Apagar Equipa");
-    createButton(divTable, updateJogoEventHandler, "Atualizar Equipa");
-    createButton(divTable, selectJogoEventHandler, "Selecionar Equipa");
-    replaceChilds(this.id, divTable);
+    const div = document.createElement("div");
+    div.setAttribute('id', 'daiv');
+    div.appendChild(divTable2);
+    div.appendChild(divTable);
+    replaceChilds(this.id, div);
 };
 
 /**
@@ -282,9 +259,10 @@ Information.prototype.processingTorneio = function (acao) {
     const modalidade = modalidadeAux.options[modalidadeAux.selectedIndex].value;
     const tipoTorneioAux = document.getElementById("tipoTorneio");
     const tipoTorneio = tipoTorneioAux.options[tipoTorneioAux.selectedIndex].value;
-    const capacidadeAtual=document.getElementById('capacidadeAtual').value;
+    const capacidadeAtual = document.getElementById('capacidadeAtual').value;
     const capacidadeMax = document.getElementById("capacidadeMaxTorneio").value;
-    const torneio = { id: id, name: name, modalidade: modalidade, tipoTorneio: tipoTorneio,capacidadeAtual:capacidadeAtual, capacidadeMax: capacidadeMax };
+    const torneio = { id: id, name: name, modalidade: modalidade, tipoTorneio: tipoTorneio, capacidadeAtual: capacidadeAtual, capacidadeMax: capacidadeMax };
+
     const xhr = new XMLHttpRequest();
     xhr.responseType = "json";
     if (acao === "create") {
@@ -310,3 +288,31 @@ Information.prototype.processingTorneio = function (acao) {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(torneio));
 };
+
+Information.prototype.processingEquipa = function (idTorneio) {
+
+    const name = document.getElementById('nomeEquipa').value;
+    var equipas = info.torneios[idTorneio].equipas;
+    const equipa = { name: name };
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            let newEquipa = new Equipa(xhr.response.insertId, name);
+            equipas.push(newEquipa);
+            console.log(xhr.response);
+            console.log("Sadasdasd");
+            const xhr2 = new XMLHttpRequest();
+            xhr2.onreadystatechange = function () {
+                info.showTorneioDetalhes();
+                console.log("ASdasdas");
+            };
+
+            xhr.open("POST", "/torneio/" + idTorneio + "/equipa/" + newEquipa.id);
+            xhr.send();
+        }
+    };
+    xhr.open("POST", "/equipa");
+    xhr.send(JSON.stringify(equipa));
+
+
+}
