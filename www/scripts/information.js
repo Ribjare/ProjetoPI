@@ -180,6 +180,7 @@ Information.prototype.showTorneioDetalhes = function (idTorneio) {
     createButton(divTable2, newTeamEventHandler, "Inscrever Equipa");
     createButton(divTable2, deleteTeamEventHandler, "Apagar Equipa");
     // createButton(divTable2, selectJogoEventHandler, "Selecionar Equipa");
+    createButton(divTable, new function(){}, "Formar Jogos");
 
     const div = document.createElement("div");
     div.setAttribute('id', 'daiv');

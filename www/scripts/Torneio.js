@@ -20,7 +20,7 @@ function Torneio(id, name, modalidade, tipo, capacidadeAtual, capacidadeMaxima) 
     this.getEquipa();
     this.getJogos();
 
-    console.log(this.jogos);
+    console.log(this);
 };
 
 Torneio.prototype.getEquipa = function () {
@@ -37,6 +37,17 @@ Torneio.prototype.getEquipa = function () {
     };
     xhr.send();
 };
+
+Torneio.prototype.formarJogos = function () {
+    // se for da forma de uma liga, isto é, todos vao jogar contra todos pelo menos uma vez
+    if (this.tipo == 1) {
+        for (var i = 0; i < this.equipas.length-1; i++){
+            for(var o = 1; o < this.equipas.length; o++){
+                this.jogos.push(new Jogo());//falta criar o comando para o jogo
+            }
+        }
+    }
+}
 
 
 Torneio.prototype.getJogos = function () {

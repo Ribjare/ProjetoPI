@@ -261,8 +261,7 @@ function deleteEquipaTorneio(req, res) {
     });
 
 }
-module.exports.deleteEquipaTorneio = deleteEquipaTorneio;
-module.exports.joinEquipaTorneio = joinEquipaTorneio;
+
 
 function deleteEquipa(req, res) {
     let query = 'DELETE FROM equipa WHERE id = ?';
@@ -278,7 +277,6 @@ function deleteEquipa(req, res) {
         });
     });
 }
-module.exports.deleteEquipa = deleteEquipa;
 
 function removeJogador(req, res) {
     let query = 'DELETE FROM jogador WHERE id = ?';
@@ -332,6 +330,11 @@ function getGamesPerTeam(req, res) {
     });
 
 }
+
+module.exports.deleteEquipaTorneio = deleteEquipaTorneio;
+module.exports.joinEquipaTorneio = joinEquipaTorneio;
+module.exports.deleteEquipa = deleteEquipa;
+
 module.exports.getGamesPerTeam = getGamesPerTeam;
 module.exports.getJogadorPerTeam = getJogadorPerTeam;
 module.exports.createUpdateEquipa = createUpdateEquipa;
