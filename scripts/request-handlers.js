@@ -178,6 +178,7 @@ function createUpdateJogador(req, res) {
 function createUpdateTorneio(req, res) {
     let connection = mysql.createConnection(options);
     let name = req.body.name;
+    console.log(name);
     let modalidade = req.body.modalidade;
     let torneio = req.body.tipoTorneio;
     let capMax = req.body.capacidadeMax;
@@ -211,6 +212,7 @@ function deleteTorneio(req, res) {
 function createUpdateEquipa(req, res) {
     let connection = mysql.createConnection(options);
     let name = req.body.name;
+    console.log(req.body);
     let sql = (req.method === 'PUT') ? "UPDATE equipa SET nome = ? WHERE id = ?" : "INSERT INTO equipa(nome) VALUES (?)";
     connection.connect(function (err) {
         if (err) throw err;

@@ -123,17 +123,16 @@ Information.prototype.showTorneio = function () {
     replaceChilds(this.id, divTable);
 };
 
-Information.prototype.showTorneioDetalhes = function (id) {
-    console.log(this.torneios[id].jogos);
+Information.prototype.showTorneioDetalhes = function (idTorneio) {
     const table = document.createElement("table");
     table.appendChild(tableLine(new Jogo(), true));
-    window.info.torneios[id].jogos.forEach(p => {
+    window.info.torneios[idTorneio-1].jogos.forEach(p => {
         table.appendChild(tableLine(p, false));
     });
 
     const table2 = document.createElement('table');
     table2.appendChild(tableLine(new Equipa(), true));
-    window.info.torneios[id].equipas.forEach(p => {
+    window.info.torneios[idTorneio-1].equipas.forEach(p => {
         table2.appendChild(tableLine(p, false));
     });
 
@@ -159,15 +158,14 @@ Information.prototype.showTorneioDetalhes = function (id) {
             const id = parseInt(row.cells[1].firstChild.nodeValue);
             if (checkBock && checkBock.checked) {
                 //self.removeTorneio(id);
-                console.log("apagou");
             }
         }
     }
-
+    console.log("gadusdgjiodsg "+ idTorneio);
     function newTeamEventHandler() {
         /** @todo Completar */
         replaceChilds('daiv', document.createElement('div')); //limpar a table
-        document.getElementById('formEquipa').action = 'javascript:info.processingEquipa(' + id + ');';
+        document.getElementById('formEquipa').action = 'javascript:info.processingEquipa(' + idTorneio + ');';
         document.getElementById('formEquipa').style.display = 'block';
         document.getElementById('formEquipa').reset();
 
@@ -291,27 +289,31 @@ Information.prototype.processingTorneio = function (acao) {
 
 Information.prototype.processingEquipa = function (idTorneio) {
 
-    const name = document.getElementById('nomeEquipa').value;
-    var equipas = info.torneios[idTorneio].equipas;
-    const equipa = { name: name };
+    const nome = document.getElementById('nomeEquipa').value;
+
+    var equipas = info.torneios[idTorneio-1].equipas;
+    const equipa = { name: nome };
     const xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
     xhr.onreadystatechange = function () {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-            let newEquipa = new Equipa(xhr.response.insertId, name);
-            equipas.push(newEquipa);
-            console.log(xhr.response);
-            console.log("Sadasdasd");
+            let newEquipa = new Equipa(xhr.response.insertId, nome);
+            info.torneios[idTorneio-1].equipas.push(newEquipa);
             const xhr2 = new XMLHttpRequest();
             xhr2.onreadystatechange = function () {
-                info.showTorneioDetalhes();
-                console.log("ASdasdas");
+                info.showTorneioDetalhes(idTorneio);
             };
+            console.log("id");
+            console.log(xhr.response.insertId);
+            console.log(xhr.response["insertId"]);
 
-            xhr.open("POST", "/torneio/" + idTorneio + "/equipa/" + newEquipa.id);
-            xhr.send();
+            xhr2.open("POST", "/torneio/" + idTorneio + "/equipa/" + newEquipa.id);
+            xhr2.send();
         }
     };
     xhr.open("POST", "/equipa");
+    console.log(JSON.stringify(equipa));
+
     xhr.send(JSON.stringify(equipa));
 
 
