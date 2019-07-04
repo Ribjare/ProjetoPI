@@ -71,7 +71,8 @@ app.delete("/equipa/:id", requestHandlers.deleteEquipa);
 //to delete a tornament
 app.delete("/torneio/:id", requestHandlers.deleteTorneio);
 
-//to delete a game
+//to delete a team from a tornament
+app.delete("/torneio/:idTorneio/equipa/:idEquipa", requestHandlers.deleteEquipaTorneio);
 
 app.listen(8081, function () {
     console.log("Server running at http://localhost:8081");

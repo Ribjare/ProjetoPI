@@ -178,7 +178,7 @@ function createUpdateJogador(req, res) {
 function createUpdateTorneio(req, res) {
     let connection = mysql.createConnection(options);
     let name = req.body.name;
-    console.log(name);
+    console.log("Torneio" + req.body);
     let modalidade = req.body.modalidade;
     let torneio = req.body.tipoTorneio;
     let capMax = req.body.capacidadeMax;
@@ -212,7 +212,7 @@ function deleteTorneio(req, res) {
 function createUpdateEquipa(req, res) {
     let connection = mysql.createConnection(options);
     let name = req.body.name;
-    console.log(req.body);
+    console.log(req.body.name);
     let sql = (req.method === 'PUT') ? "UPDATE equipa SET nome = ? WHERE id = ?" : "INSERT INTO equipa(nome) VALUES (?)";
     connection.connect(function (err) {
         if (err) throw err;
@@ -244,6 +244,24 @@ function joinEquipaTorneio(req, res) {
     });
 }
 
+function deleteEquipaTorneio(req, res) {
+    let connection = mysql.createConnection(options);
+    let idTorneio = req.params.idTorneio;
+    let idEquipa = req.params.idEquipa;
+    let sql = "DELETE FROM TorneioEquipa WHERE idEquipa=? and idTorneio=?";
+    connection.connect(function (err) {
+        if (err) throw err;
+        connection.query(sql, [idEquipa, idTorneio], function (err, rows) {
+            if (err) {
+                res.sendStatus(500);
+            } else {
+                res.sendStatus(200);
+            }
+        });
+    });
+
+}
+module.exports.deleteEquipaTorneio = deleteEquipaTorneio;
 module.exports.joinEquipaTorneio = joinEquipaTorneio;
 
 function deleteEquipa(req, res) {

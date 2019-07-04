@@ -38,6 +38,7 @@ Torneio.prototype.getEquipa = function () {
     xhr.send();
 };
 
+
 Torneio.prototype.getJogos = function () {
     var jogos = this.jogos
     const xhr = new XMLHttpRequest();

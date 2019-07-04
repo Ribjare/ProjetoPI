@@ -28,6 +28,8 @@ Information.prototype.showHome = function () {
 
 Information.prototype.showTorneio = function () {
     document.getElementById('formTorneio').style.display = 'none';
+    document.getElementById('formEquipa').style.display = 'none';
+
 
     const table = document.createElement("table");
     table.appendChild(tableLine(new Torneio(), true));
@@ -124,6 +126,8 @@ Information.prototype.showTorneio = function () {
 };
 
 Information.prototype.showTorneioDetalhes = function (idTorneio) {
+    document.getElementById('formEquipa').style.display = 'none';
+
     const table = document.createElement("table");
     table.appendChild(tableLine(new Jogo(), true));
     window.info.torneios[idTorneio-1].jogos.forEach(p => {
@@ -153,11 +157,12 @@ Information.prototype.showTorneioDetalhes = function (idTorneio) {
 
     function deleteTeamEventHandler() {
         /** @todo Completar */
-        for (const row of table.rows) {
+        for (const row of table2.rows) {
             const checkBock = row.cells[0].firstChild;
             const id = parseInt(row.cells[1].firstChild.nodeValue);
             if (checkBock && checkBock.checked) {
-                //self.removeTorneio(id);
+
+                self.removeEquipa(idTorneio,id);
             }
         }
     }
@@ -312,9 +317,22 @@ Information.prototype.processingEquipa = function (idTorneio) {
         }
     };
     xhr.open("POST", "/equipa");
-    console.log(JSON.stringify(equipa));
+    console.log(equipa);
 
     xhr.send(JSON.stringify(equipa));
-
-
-}
+};
+/**
+ * Função que apaga o recurso pessoa com ym pedido ao NODE.JS através do verbo DELETE, usando pedidos assincronos e JSON
+  */
+ Information.prototype.removeEquipa = function (idTorneio, idEquipa) {
+    /** @todo Completar */
+    const xhr = new XMLHttpRequest();
+    xhr.open('DELETE', '/torneio/'+idTorneio+'/equipa/' + idEquipa);
+    xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            info.torneios[idTorneio-1].equipas.splice(info.torneios[idTorneio-1].equipas.findIndex(i => i.id === idEquipa), 1);
+            info.showTorneioDetalhes(idTorneio);
+        }
+    };
+    xhr.send();
+};
