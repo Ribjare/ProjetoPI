@@ -166,7 +166,7 @@ Information.prototype.showTorneioDetalhes = function (idTorneio) {
             }
         }
     }
-    console.log("gadusdgjiodsg "+ idTorneio);
+
     function newTeamEventHandler() {
         /** @todo Completar */
         replaceChilds('daiv', document.createElement('div')); //limpar a table
@@ -176,11 +176,16 @@ Information.prototype.showTorneioDetalhes = function (idTorneio) {
 
     }
 
+    function createGames(){
+        self.torneios[idTorneio-1].formarJogos();
+        self.showTorneioDetalhes(idTorneio);
+    }
+
 
     createButton(divTable2, newTeamEventHandler, "Inscrever Equipa");
     createButton(divTable2, deleteTeamEventHandler, "Apagar Equipa");
     // createButton(divTable2, selectJogoEventHandler, "Selecionar Equipa");
-    createButton(divTable, new function(){}, "Formar Jogos");
+    createButton(divTable, createGames, "Formar Jogos");
 
     const div = document.createElement("div");
     div.setAttribute('id', 'daiv');
@@ -215,12 +220,12 @@ Information.prototype.getModalidades = function () {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
             this.response.modalidade.forEach(p => {
                 window.info.modalidades.push(p);
-            })
-        };
+            });
+        }
     };
     xhr.send();
 
-}
+};
 Information.prototype.getTipos = function () {
     const xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -309,16 +314,13 @@ Information.prototype.processingEquipa = function (idTorneio) {
             xhr2.onreadystatechange = function () {
                 info.showTorneioDetalhes(idTorneio);
             };
-            console.log("id");
-            console.log(xhr.response.insertId);
-            console.log(xhr.response["insertId"]);
+            
 
             xhr2.open("POST", "/torneio/" + idTorneio + "/equipa/" + newEquipa.id);
             xhr2.send();
         }
     };
     xhr.open("POST", "/equipa");
-    console.log(equipa);
 
     xhr.send(JSON.stringify(equipa));
 };

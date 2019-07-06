@@ -20,7 +20,6 @@ function Torneio(id, name, modalidade, tipo, capacidadeAtual, capacidadeMaxima) 
     this.getEquipa();
     this.getJogos();
 
-    console.log(this);
 };
 
 Torneio.prototype.getEquipa = function () {
@@ -41,17 +40,35 @@ Torneio.prototype.getEquipa = function () {
 Torneio.prototype.formarJogos = function () {
     // se for da forma de uma liga, isto é, todos vao jogar contra todos pelo menos uma vez
     if (this.tipo == 1) {
-        for (var i = 0; i < this.equipas.length-1; i++){
-            for(var o = 1; o < this.equipas.length; o++){
-                this.jogos.push(new Jogo());//falta criar o comando para o jogo
+        for (var i = 0; i < this.equipas.length - 1; i++) {
+            for (var o = 1; o < this.equipas.length; o++) {
+                criarJogo(this.equipas[i].id, this.equipas[o].id);
             }
         }
+    // se for da forma de torneio
+    }else if(this.tipo == 2){
+
     }
+};
+
+
+function criarJogo(id1, id2) {
+    const xhr = new XMLHttpRequest();
+    var jogo = { equipa1: id1, equipa2: id2 };
+    var self = this;
+    xhr.responseType = 'json';
+    xhr.open('POST', '/game');
+    xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            let newJogo = new Jogo(xhr.response.insertId, null, id1, id2);
+            self.equipas.push(newJogo);
+        }
+    };
+    xhr.send(JSON.stringify(jogo));
 }
 
-
 Torneio.prototype.getJogos = function () {
-    var jogos = this.jogos
+    var jogos = this.jogos;
     const xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.open('GET', '/torneio/' + this.id + '/jogo');

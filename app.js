@@ -50,6 +50,7 @@ app.post("/torneio", requestHandlers.createUpdateTorneio);
 app.post("/torneio/:idTorneio/equipa/:idEquipa", requestHandlers.joinEquipaTorneio);
 
 //to create a game
+app.post("/game", requestHandlers.createGame);
 
 //to update a player
 app.put("/jogador/:id", requestHandlers.createUpdateJogador);

@@ -101,7 +101,7 @@ function getJogos(req, res) {
         if (err) {
             res.json({ "message": "Error", "error": err });
         } else {
-            res.json({ "message": "Success", "equipa": rows });
+            res.json({ "message": "Success", "jogos": rows });
         }
     });
 }
@@ -114,13 +114,10 @@ function getJogosFromTorneio(req, res) {
     let idTorneio = req.params.id;
     let connection = mysql.createConnection(options);
     connection.connect();
-    let query = "SELECT Jogo.id, Jogo.dataJogo, e1.nome as equipa1, e2.nome as equipa2, torneio.name as NomeTorneio "
+    let query = "SELECT Jogo.id, Jogo.dataJogo, Jogo.equipa1, Jogo.equipa2 ";
     query += "FROM Jogo ";
-    query += "join torneioequipa on Jogo.id = torneioequipa.idEquipa ";
-    query += "join Torneio on torneio.id = torneioequipa.idTorneio ";
-    query += "join equipa e1 on e1.id=jogo.equipa1 ";
-    query += "join equipa e2 on e2.id=jogo.equipa2 where torneio.id = ? ";
-
+    query += "where torneioId = ?";
+    console.log(idTorneio);
     connection.query(query, idTorneio, function (err, rows) {
         if (err) {
             res.json({ "message": "Error", "error": err });
@@ -330,6 +327,29 @@ function getGamesPerTeam(req, res) {
     });
 
 }
+
+function createGame(req, res){
+    let equipa1 = req.body.equipa1;
+    let equipa2 = req.body.equipa2;
+    let arrayEquipas = req.body;
+    console.log(arrayEquipas);
+    let connection = mysql.createConnection(options);
+    
+    connection.connect();
+    let query = "INSERT INTO Jogo(equipa1, equipa2) VALUES(?, ?)";
+    connection.connect(function (err) {
+        if (err) throw err;
+        connection.query(query, equipa1, equipa2, function (err, rows) {
+            if (err) {
+                res.sendStatus(500);
+            } else {
+                res.send(rows);
+            }
+        });
+    });
+    connection.end();
+}
+module.exports.createGame=createGame;
 
 module.exports.deleteEquipaTorneio = deleteEquipaTorneio;
 module.exports.joinEquipaTorneio = joinEquipaTorneio;

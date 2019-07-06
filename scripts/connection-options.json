@@ -2,5 +2,6 @@
     "host": "localhost",
     "user": "root",
     "database": "projetopi",
-    "password": "123qazwsxedc"
+    "password": "123qazwsxedc",
+    "dataStrings": true
 }
