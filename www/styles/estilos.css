@@ -4,7 +4,7 @@
 }
 
 header {
-    background-color: rgb(69, 95, 6);
+    background-color: rgb(16, 196, 196);
     padding: 20px;
 }
 
@@ -19,6 +19,7 @@ h3 {
 }
 
 li {
+    display: inline;
     list-style: none;
     letter-spacing: 2px;
     padding: 10px;
@@ -29,10 +30,11 @@ li {
 }
 
 #nav {
-    display: flex;
+    display: inline-flex;
     justify-content: flex-start;
     flex-direction: row;
     font-weight: normal;
+
 
 }
 
@@ -52,7 +54,7 @@ td {
     display: flex;
     flex-direction: column;
     align-content: flex-end;
-    background-color: red;
+    background-color: rgba(30, 155, 172, 0.904);
 }
 
 #mensagemErro {
