@@ -299,7 +299,7 @@ function getJogadorPerTeam(req, res) {
     query += "join equipa e on j.idEquipa = e.id ";
     query += "where e.id = ?";
 
-    connection.query(query, idEquipa, function (err, rows) {
+    connection.query(query, [idEquipa], function (err, rows) {
         if (err) {
             res.json({ "message": "Error", "error": err });
         } else {
@@ -318,7 +318,7 @@ function getGamesPerTeam(req, res) {
     query += "join equipa e2 on e2.id=j.equipa2 ";
     query += "where e.id=? or e2.id=?"
 
-    connection.query(query, idEquipa, idEquipa, function (err, rows) {
+    connection.query(query, [idEquipa, idEquipa], function (err, rows) {
         if (err) {
             res.json({ "message": "Error", "error": err });
         } else {
@@ -331,15 +331,18 @@ function getGamesPerTeam(req, res) {
 function createGame(req, res){
     let equipa1 = req.body.equipa1;
     let equipa2 = req.body.equipa2;
+    let idTorneio = req.body.idTorneio;
+
+    console.log(equipa1 +" "+equipa2+" "+ idTorneio);
+
     let arrayEquipas = req.body;
     console.log(arrayEquipas);
     let connection = mysql.createConnection(options);
     
-    connection.connect();
-    let query = "INSERT INTO Jogo(equipa1, equipa2) VALUES(?, ?)";
+    let query = "INSERT INTO Jogo(equipa1, equipa2, torneioId) VALUES(?, ?, ?)";
     connection.connect(function (err) {
         if (err) throw err;
-        connection.query(query, equipa1, equipa2, function (err, rows) {
+        connection.query(query, [equipa1, equipa2, idTorneio], function (err, rows) {
             if (err) {
                 res.sendStatus(500);
             } else {
@@ -347,7 +350,6 @@ function createGame(req, res){
             }
         });
     });
-    connection.end();
 }
 module.exports.createGame=createGame;
 
