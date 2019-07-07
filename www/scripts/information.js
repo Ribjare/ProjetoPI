@@ -100,8 +100,6 @@ Information.prototype.showTorneio = function () {
             document.getElementById('capacidadeMaxTorneio').value = torneio.capacidadeMaxima;
 
         }
-
-
     }
 
     function selectTornamentEventHandler() {
@@ -118,12 +116,17 @@ Information.prototype.showTorneio = function () {
         }
     }
 
-    createButton(divTable, newTornamentEventHandler, "Novo Torneio");
-    createButton(divTable, deleteTornamentEventHandler, "Apagar Torneio");
-    createButton(divTable, updateTornamentEventHandler, "Atualizar Torneio");
-    createButton(divTable, selectTornamentEventHandler, "Selecionar Torneio");
-    replaceChilds(this.id, divTable);
+    var divGrande = document.createElement('div');
+    
+    createButton(divGrande, newTornamentEventHandler, "Novo Torneio");
+    createButton(divGrande, deleteTornamentEventHandler, "Apagar Torneio");
+    createButton(divGrande, updateTornamentEventHandler, "Atualizar Torneio");
+    createButton(divGrande, selectTornamentEventHandler, "Selecionar Torneio");
+    divGrande.appendChild(divTable);
+
+    replaceChilds(this.id, divGrande);
 };
+
 function getTorneioId(id){
     for(var i = 0; i < window.info.torneios.length; i++){
         if(window.info.torneios[i].id===id){
@@ -131,6 +134,7 @@ function getTorneioId(id){
         }
     }
 }
+
 Information.prototype.showTorneioDetalhes = function (idTorneio) {
     document.getElementById('formEquipa').style.display = 'none';
 
@@ -190,12 +194,24 @@ Information.prototype.showTorneioDetalhes = function (idTorneio) {
         torneio.formarJogos(self);
         self.showTorneioDetalhes(idTorneio);
     }
+    function deleteGame(){
+        for (const row of table.rows) {
+            const checkBock = row.cells[0].firstChild;
+            const id = parseInt(row.cells[1].firstChild.nodeValue);
+            if (checkBock && checkBock.checked) {
+                self.removeJogo(idTorneio, id);
+            }
+        }
+    }
 
 
     createButton(divTable2, newTeamEventHandler, "Inscrever Equipa");
     createButton(divTable2, deleteTeamEventHandler, "Apagar Equipa");
     // createButton(divTable2, selectJogoEventHandler, "Selecionar Equipa");
     createButton(divTable, createGames, "Formar Jogos");
+    createButton(divTable, deleteGame, "Eliminar Jogo");
+    createButton(divTable, function(){}, "Atualizar Jogo");
+
 
     const div = document.createElement("div");
     div.setAttribute('id', 'daiv');
@@ -214,7 +230,8 @@ Information.prototype.getTorneio = function () {
     xhr.onreadystatechange = function () {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
             this.response.torneio.forEach(p => {
-                window.info.torneios.push(new Torneio(p.id, p.name, p.modalidade, p.tipoTorneio, p.capacidadeAtual, p.capacidadeMax));
+                console.log(p);
+                window.info.torneios.push(new Torneio(p.id, p.name, p.modalidade, p.tipoTorneio, p.capacidadeAtual, p.capacidadeMax, p.dataTorneio));
             });
         }
     };
@@ -347,10 +364,28 @@ Information.prototype.processingEquipa = function (idTorneio) {
 Information.prototype.removeEquipa = function (idTorneio, idEquipa) {
     /** @todo Completar */
     const xhr = new XMLHttpRequest();
+    var torneio = getTorneioId(idTorneio);
     xhr.open('DELETE', '/torneio/' + idTorneio + '/equipa/' + idEquipa);
     xhr.onreadystatechange = function () {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-            info.torneios[idTorneio - 1].equipas.splice(info.torneios[idTorneio - 1].equipas.findIndex(i => i.id === idEquipa), 1);
+            torneio.equipas.splice(torneio.equipas.findIndex(i => i.id === idEquipa), 1);
+            info.showTorneioDetalhes(idTorneio);
+        }
+    };
+    xhr.send();
+};
+
+/**
+ * Função que apaga o recurso pessoa com ym pedido ao NODE.JS através do verbo DELETE, usando pedidos assincronos e JSON
+  */
+ Information.prototype.removeJogo = function (idTorneio, idJogo) {
+    /** @todo Completar */
+    const xhr = new XMLHttpRequest();
+    var torneio = getTorneioId(idTorneio);
+    xhr.open('DELETE', '/torneio/' + idTorneio + '/jogo/' + idJogo);
+    xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            torneio.jogos.splice(torneio.jogos.findIndex(i => i.id === idJogo), 1);
             info.showTorneioDetalhes(idTorneio);
         }
     };

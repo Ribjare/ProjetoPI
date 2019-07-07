@@ -27,7 +27,7 @@ function getJogador(req, res) {
 function getTorneio(req, res) {
     let connection = mysql.createConnection(options);
     connection.connect();
-    let query = "SELECT id, name, modalidade, tipoTorneio, capacidadeAtual, capacidadeMax FROM torneio";
+    let query = "SELECT id, name, dataTorneio, modalidade, tipoTorneio, capacidadeAtual, capacidadeMax FROM torneio";
     connection.query(query, function (err, rows) {
         if (err) {
             res.json({ "message": "Error", "error": err });
@@ -96,7 +96,7 @@ function getTipoTorneio(req, res) {
 function getJogos(req, res) {
     let connection = mysql.createConnection(options);
     connection.connect();
-    let query = "SELECT id, DATE_FORMAT(birthDate, '%Y-%m-%d') as birthDate, equipa1, equipa2 FROM Jogo";
+    let query = "SELECT id, equipa1, equipa2 FROM Jogo";
     connection.query(query, function (err, rows) {
         if (err) {
             res.json({ "message": "Error", "error": err });
@@ -114,7 +114,7 @@ function getJogosFromTorneio(req, res) {
     let idTorneio = req.params.id;
     let connection = mysql.createConnection(options);
     connection.connect();
-    let query = "SELECT Jogo.id, Jogo.dataJogo, Jogo.equipa1, Jogo.equipa2 ";
+    let query = "SELECT Jogo.id, Jogo.equipa1, Jogo.equipa2, Jogo.PontosEquipa1, Jogo.PontosEquipa2 ";
     query += "FROM Jogo ";
     query += "where torneioId = ?";
     console.log(idTorneio);
@@ -259,6 +259,24 @@ function deleteEquipaTorneio(req, res) {
 
 }
 
+function deleteJogoTorneio(req, res) {
+    let connection = mysql.createConnection(options);
+    let idTorneio = req.params.idTorneio;
+    let id = req.params.idJogo;
+    let sql = "DELETE FROM Jogo WHERE id=? and torneioId=?";
+    connection.connect(function (err) {
+        if (err) throw err;
+        connection.query(sql, [id, idTorneio], function (err, rows) {
+            if (err) {
+                res.sendStatus(500);
+            } else {
+                res.sendStatus(200);
+            }
+        });
+    });
+
+}
+module.exports.deleteJogoTorneio = deleteJogoTorneio;
 
 function deleteEquipa(req, res) {
     let query = 'DELETE FROM equipa WHERE id = ?';
@@ -351,6 +369,8 @@ function createGame(req, res){
         });
     });
 }
+
+
 module.exports.createGame=createGame;
 
 module.exports.deleteEquipaTorneio = deleteEquipaTorneio;

@@ -110,3 +110,7 @@ td {
     justify-content: center;
 }
 
+#formJogo{
+    display: none;
+}
+
