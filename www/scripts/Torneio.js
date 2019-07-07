@@ -48,7 +48,10 @@ Torneio.prototype.formarJogos = function (funcao) {
         }
     // se for da forma de torneio
     }else if(this.tipo == 2){
-
+        for(var i = 0; i < this.equipas.length; i++, i++){
+            this.criarJogo(this.equipas[i].id, this.equipas[i+1].id, funcao);
+            //console.log(i);
+        }
     }
 };
 

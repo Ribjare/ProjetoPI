@@ -124,19 +124,29 @@ Information.prototype.showTorneio = function () {
     createButton(divTable, selectTornamentEventHandler, "Selecionar Torneio");
     replaceChilds(this.id, divTable);
 };
-
+function getTorneioId(id){
+    for(var i = 0; i < window.info.torneios.length; i++){
+        if(window.info.torneios[i].id===id){
+            return window.info.torneios[i];
+        }
+    }
+}
 Information.prototype.showTorneioDetalhes = function (idTorneio) {
     document.getElementById('formEquipa').style.display = 'none';
 
     const table = document.createElement("table");
     table.appendChild(tableLine(new Jogo(), true));
-    window.info.torneios[idTorneio - 1].jogos.forEach(p => {
+    console.log(window.info.torneios);
+    let torneio = getTorneioId(idTorneio);//window.info.torneios[idTorneio - 1];
+
+
+    torneio.jogos.forEach(p => {
         table.appendChild(tableLine(p, false));
     });
 
     const table2 = document.createElement('table');
     table2.appendChild(tableLine(new Equipa(), true));
-    window.info.torneios[idTorneio - 1].equipas.forEach(p => {
+    torneio.equipas.forEach(p => {
         table2.appendChild(tableLine(p, false));
     });
 
@@ -177,7 +187,7 @@ Information.prototype.showTorneioDetalhes = function (idTorneio) {
     }
 
     function createGames() {
-        self.torneios[idTorneio - 1].formarJogos(self);
+        torneio.formarJogos(self);
         self.showTorneioDetalhes(idTorneio);
     }
 
@@ -301,8 +311,8 @@ Information.prototype.processingTorneio = function (acao) {
 Information.prototype.processingEquipa = function (idTorneio) {
 
     const nome = document.getElementById('nomeEquipa').value;
-    var torneio = info.torneios[idTorneio - 1];
-    var equipas = info.torneios[idTorneio - 1].equipas;
+    var torneio = getTorneioId(idTorneio);
+    var equipas = getTorneioId(idTorneio).equipas;
     const equipa = { name: nome };
     console.log(torneio.capacidadeAtual + " - "+torneio.capacidadeMaxima);
     if (torneio.capacidadeAtual !== torneio.capacidadeMaxima) {
@@ -312,7 +322,7 @@ Information.prototype.processingEquipa = function (idTorneio) {
         xhr.onreadystatechange = function () {
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                 let newEquipa = new Equipa(xhr.response.insertId, nome);
-                info.torneios[idTorneio - 1].equipas.push(newEquipa);
+                torneio.equipas.push(newEquipa);
                 const xhr2 = new XMLHttpRequest();
                 xhr2.onreadystatechange = function () {
                     info.showTorneioDetalhes(idTorneio);
