@@ -103,3 +103,10 @@ td {
     margin-left:45%;
     width: 15%;
 }
+#intro{
+    display:flex;
+    font-size: 20px;
+    margin-top: 50px;
+    justify-content: center;
+}
+
