@@ -3,6 +3,12 @@
     background-color: rgb(241, 240, 240);
     color: black
 }
+nav{
+    border-bottom:1px solid #EAEAEB;
+    text-align:right;
+    height: 70px;
+    line-height: 70px;
+}
 header a{    color: black;
 }
 header {
@@ -31,9 +37,45 @@ h3 {
     border: 1px solid black;
 }
 #menu a{
-    color: white
+    text-decoration: none;
+    color: white;
+    margin: 0 10px;
+    line-height: 70px;
 
 }
+#togglelabel{
+margin: 0 40px 0 0;
+font-size: 26xp;
+line-height: 70px;
+display: none;
+width: 26px;
+float: right;
+}
+#toggle{
+  display:none;  
+}
+@media only screen and (max-width:500px){
+    #togglelabel {
+        display:block;
+        cursor: pointer;
+        
+    }
+    #menu{
+        text-align: center;
+        width: 100%;
+        display: none;
+    }
+    #menu a{
+        clear: right;
+        display: block;
+        border-bottom: 1px solid #EAEAEB;
+        margin: 0;
+    }
+    #toggle:checked + #menu{
+        display: block;
+    }
+}
+
 li {
     display: inline-flex;
     list-style: none;
