@@ -39,6 +39,8 @@ function tableLine(object, headerFormat) {
     for (var property in object) {
         if ((object[property] instanceof Function))
             continue;
+        if (Array.isArray(object[property]))
+            continue;
         if (headerFormat) {
             tableCell = document.createElement("th");
             tableCell.textContent = property[0].toUpperCase() + property.substr(1, property.length - 1);
@@ -55,9 +57,9 @@ function tableLine(object, headerFormat) {
  * Função genérica que tem como objetivo a criação de uma coluna com checkbox
  */
 function createCellCheckbox() {
-    var td=document.createElement("td");
+    var td = document.createElement("td");
     var check = document.createElement("input");
-    check.type="checkbox";
+    check.type = "checkbox";
     td.appendChild(check);
     return td;
 }
