@@ -1,12 +1,12 @@
 "use strict";
 
 /** 
-* @class Estrutura com capacidade de armazenar o estado de uma entidade pessoa 
+* @class Estrutura com capacidade de armazenar o estado de uma entidade jogador 
 * @constructs jogador
-* @param {int} id - id do torneio
-* @param {String} name - nome do torneio
-* @param {String} birthDay - modalidade do torneio
-* @param {String} nTelemovel - tipo do torneio
+* @param {int} id - id do jogador
+* @param {String} name - nome do jogador
+* @param {Date} birthDay - data de nascimento do jogador
+* @param {String} nTelemovel - numero de telemovel do jogador
 */
 function Jogador(id, name, birthDay, nTelemovel) {
     this.id = id;

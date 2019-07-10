@@ -1,14 +1,15 @@
 "use strict";
 
 /** 
-* @class Guarda toda informação necessaria na execução do exercicio 
-* @constructs Informacao
-* @param {string} id - id do elemento HTML que contém a informação.
-* 
-* @property {string} id - id do elemento HTML que contém a informação.
-* @property {country[]} countries - Array de objetos do tipo Country, para guardar todos os countries do nosso sistema
-* @property {person[]} people - Array de objetos do tipo person, para guardar todas as pessoas do nosso sistema
-*/
+ * @class Guarda toda informação necessaria na execução do exercicio 
+ * @constructs Informacao
+ * @param {string} id - id do elemento HTML que contém a informação.
+ * 
+ * @property {string} id - id do elemento HTML que contém a informação.
+ * @property {torneios[]} torneios - Array de objetos do tipo Torneios
+ * @property {modalidades[]} modalidades - Array de objetos do tipo modalidades
+ * @property {modalidades[]} tipos - Array de objetos do tipo tipos de torneio
+ */
 function Information(id) {
     this.id = id;
     this.torneios = [];
@@ -18,7 +19,7 @@ function Information(id) {
 }
 
 /**
- * coloca a palavra "home" no div titulo e limpa o div informação
+ * Mostra a landing Page
  */
 Information.prototype.showHome = function () {
     document.getElementById('formTorneio').style.display = 'none';
@@ -30,7 +31,10 @@ Information.prototype.showHome = function () {
 
 };
 
-Information.prototype.showMeusTorneios = function(){
+/**
+ * Mostra os meus torneios
+ */
+Information.prototype.showMeusTorneios = function () {
     document.getElementById('formTorneio').style.display = 'none';
     document.getElementById('formEquipa').style.display = 'none';
     document.getElementById('formJogo').style.display = 'none';
@@ -38,11 +42,13 @@ Information.prototype.showMeusTorneios = function(){
     document.getElementById("intro").style.display = 'none';
 
     var div = document.createElement('div');
-    div.innerText="Pagina nao desenvolvida, seria uma pagina designada ao utilizador registados";
+    div.innerText = "Pagina nao desenvolvida, seria uma pagina designada ao utilizador registados";
     replaceChilds(this.id, div);
 };
 
-
+/**
+ * Mostra todos os torneios precentes no sistema
+ */
 Information.prototype.showTorneio = function () {
     document.getElementById('formTorneio').style.display = 'none';
     document.getElementById('formEquipa').style.display = 'none';
@@ -64,8 +70,10 @@ Information.prototype.showTorneio = function () {
 
     divTable.appendChild(table);
 
+    /**
+     * Remove um torneio da lista
+     */
     function deleteTornamentEventHandler() {
-        /** @todo Completar */
         for (const row of table.rows) {
             const checkBock = row.cells[0].firstChild;
             const id = parseInt(row.cells[1].firstChild.nodeValue);
@@ -75,8 +83,10 @@ Information.prototype.showTorneio = function () {
         }
     }
 
+    /**
+     * Mostra a form para a criação de novos torneios
+     */
     function newTornamentEventHandler() {
-        /** @todo Completar */
         replaceChilds('divTable', document.createElement('div')); //limpar a table
         document.getElementById('formTorneio').action = 'javascript:info.processingTorneio("create");';
         document.getElementById('formTorneio').style.display = 'flex';
@@ -91,8 +101,10 @@ Information.prototype.showTorneio = function () {
         }
     }
 
+    /**
+     * Mostra a form para atualizar um torneio existente
+     */
     function updateTornamentEventHandler() {
-        /** @todo Completar */
         let idTorneio = null;
         for (const row of table.rows) {
             const checkBock = row.cells[0].firstChild;
@@ -127,6 +139,9 @@ Information.prototype.showTorneio = function () {
         }
     }
 
+    /**
+     * Seleciona um torneio para mostrar os seus detelhes(equipas e jogos)
+     */
     function selectTornamentEventHandler() {
         let idTorneio = null;
         for (const row of table.rows) {
@@ -152,6 +167,10 @@ Information.prototype.showTorneio = function () {
     replaceChilds(this.id, divGrande);
 };
 
+/**
+ * Dado o id, retorna um torneio
+ * @param {int} id do torneio
+ */
 function getTorneioId(id) {
     for (var i = 0; i < window.info.torneios.length; i++) {
         if (window.info.torneios[i].id === id) {
@@ -160,16 +179,18 @@ function getTorneioId(id) {
     }
 }
 
+/**
+ * Mostra os detalhes de um torneio, isto é uma lista de jogos e das equipas
+ * @param {int} idTorneio - id do torneio
+ */
 Information.prototype.showTorneioDetalhes = function (idTorneio) {
     document.getElementById('formEquipa').style.display = 'none';
     document.getElementById('formJogo').style.display = 'none';
-
 
     const table = document.createElement("table");
     table.appendChild(tableLine(new Jogo(), true));
     console.log(window.info.torneios);
     let torneio = getTorneioId(idTorneio);
-
 
     torneio.jogos.forEach(p => {
         table.appendChild(tableLine(p, false));
@@ -199,8 +220,10 @@ Information.prototype.showTorneioDetalhes = function (idTorneio) {
     divTable2.appendChild(labelEquipas);
     divTable2.appendChild(table2);
 
+    /**
+     * Elimina uma equipa da lista
+     */
     function deleteTeamEventHandler() {
-        /** @todo Completar */
         for (const row of table2.rows) {
             const checkBock = row.cells[0].firstChild;
             const id = parseInt(row.cells[1].firstChild.nodeValue);
@@ -211,8 +234,10 @@ Information.prototype.showTorneioDetalhes = function (idTorneio) {
         }
     }
 
+    /**
+     * Criar uma nova equipa 
+     */
     function newTeamEventHandler() {
-        /** @todo Completar */
         replaceChilds('daiv', document.createElement('div')); //limpar a table
         document.getElementById('formEquipa').action = 'javascript:info.processingEquipa(' + idTorneio + ');';
         document.getElementById('formEquipa').style.display = 'flex';
@@ -220,11 +245,17 @@ Information.prototype.showTorneioDetalhes = function (idTorneio) {
 
     }
 
+    /**
+     * Criar os jogos automaticamente
+     */
     function createGames() {
         torneio.formarJogos(self);
         self.showTorneioDetalhes(idTorneio);
     }
 
+    /**
+     * Eliminar jogos 
+     */
     function deleteGame() {
         for (const row of table.rows) {
             const checkBock = row.cells[0].firstChild;
@@ -235,6 +266,9 @@ Information.prototype.showTorneioDetalhes = function (idTorneio) {
         }
     }
 
+    /**
+     * Seleciona uma equipa para mostrar os seus jogadores
+     */
     function selectTeam() {
         let idEquipa = null;
         for (const row of table2.rows) {
@@ -250,6 +284,9 @@ Information.prototype.showTorneioDetalhes = function (idTorneio) {
         }
     }
 
+    /**
+     * Atualizar os resultados de um jogo
+     */
     function updateGame() {
 
         let idJogo = null;
@@ -282,7 +319,6 @@ Information.prototype.showTorneioDetalhes = function (idTorneio) {
     createButton(divTable2, newTeamEventHandler, "Inscrever Equipa");
     createButton(divTable2, deleteTeamEventHandler, "Apagar Equipa");
     createButton(divTable2, selectTeam, "Selecionar Equipa");
-    // createButton(divTable2, selectJogoEventHandler, "Selecionar Equipa");
     createButton(divTable, createGames, "Formar Jogos");
     createButton(divTable, deleteGame, "Eliminar Jogo");
     createButton(divTable, updateGame, "Atualizar Jogo");
@@ -295,6 +331,11 @@ Information.prototype.showTorneioDetalhes = function (idTorneio) {
     replaceChilds(this.id, div);
 };
 
+/**
+ * Mostra os detalhes de uma equipa, isto é uma lista de jogadores
+ * @param {int} idEquipa - id da equipa a mostrar
+ * @param {Torneio} torneio - objeto do torneio
+ */
 Information.prototype.showEquipa = function (idEquipa, torneio) {
     document.getElementById('formEquipa').style.display = 'none';
     document.getElementById("intro").style.display = 'none';
@@ -319,7 +360,9 @@ Information.prototype.showEquipa = function (idEquipa, torneio) {
     divTable.appendChild(labelJogos);
     divTable.appendChild(table);
 
-
+    /**
+     * Eliminar um jogador da equipa
+     */
     function deletePlayerEventHandler() {
         for (const row of table.rows) {
             const checkBock = row.cells[0].firstChild;
@@ -330,8 +373,10 @@ Information.prototype.showEquipa = function (idEquipa, torneio) {
         }
     }
 
+    /**
+     * Criar um novo jogador
+     */
     function newPlayerEventHandler() {
-        //console.log("not implemented");
         replaceChilds('daiv', document.createElement('div'));
         document.getElementById('formJogador').action = 'javascript:info.processingPlayer(' + equipa.id + ',' + torneio.id + ');';
         document.getElementById('formJogador').style.display = 'flex';
@@ -348,6 +393,12 @@ Information.prototype.showEquipa = function (idEquipa, torneio) {
     replaceChilds(this.id, div);
 };
 
+/**
+ * Processa a form do jogador
+ * 
+ *  @param {int} idEquipa - id da Equipa do jogador
+ *  @param {int} idTorneio - id do Torneio
+ */
 Information.prototype.processingPlayer = function (idEquipa, idTorneio) {
     const id = parseInt(document.getElementById("idJogador").value);
     const nomeJogador = document.getElementById("nomeJogador").value;
@@ -359,11 +410,16 @@ Information.prototype.processingPlayer = function (idEquipa, idTorneio) {
 
     console.log("supp");
 
-    const jogador = { id: id, name: nomeJogador, nTelemovel: nTelemovel, birthDate: dataNascimento, idEquipa: equipa.id };
+    const jogador = {
+        id: id,
+        name: nomeJogador,
+        nTelemovel: nTelemovel,
+        birthDate: dataNascimento,
+        idEquipa: equipa.id
+    };
 
     const xhr = new XMLHttpRequest();
     xhr.responseType = "json";
-    /** @todo Completar */
     xhr.onreadystatechange = function () {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
             let newJogador = new Jogador(xhr.response.insertId, nomeJogador, new Date(dataNascimento), numeroTelefone);
@@ -377,6 +433,12 @@ Information.prototype.processingPlayer = function (idEquipa, idTorneio) {
     xhr.send(JSON.stringify(jogador));
 }
 
+/**
+ * Manda o pedido para o servidor para eliminar um jogador
+ *  @param {int} idJogador - id de o jogador a remover
+ *  @param {Equipa} equipa - objeto de uma equipa
+ *  @param {Torneio} torneio - objeto de um torneio
+ */
 Information.prototype.removePlayer = function (idJogador, equipa, torneio) {
     const xhr = new XMLHttpRequest();
     xhr.open('DELETE', '/jogador/' + idJogador);
@@ -388,6 +450,7 @@ Information.prototype.removePlayer = function (idJogador, equipa, torneio) {
     }
     xhr.send();
 };
+
 /**
  * Função que que tem como principal objetivo solicitar ao servidor NODE.JS o recurso person através do verbo GET, usando pedidos assincronos e JSON
  */
@@ -407,6 +470,9 @@ Information.prototype.getTorneio = function () {
 
 };
 
+/**
+ * Retorna todas as modalidades na base de dados
+ */
 Information.prototype.getModalidades = function () {
     const xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -422,6 +488,9 @@ Information.prototype.getModalidades = function () {
 
 };
 
+/**
+ *  Retorna todas as tipos de torneio na base de dados
+ */
 Information.prototype.getTipos = function () {
     const xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -438,8 +507,9 @@ Information.prototype.getTipos = function () {
 };
 
 /**
- * Função que apaga o recurso pessoa com ym pedido ao NODE.JS através do verbo DELETE, usando pedidos assincronos e JSON
-  */
+ * Função que apaga um recurso de torneio
+ * @param {int} id - id do torneio
+ */
 Information.prototype.removeTorneio = function (id) {
     /** @todo Completar */
     const xhr = new XMLHttpRequest();
@@ -454,9 +524,9 @@ Information.prototype.removeTorneio = function (id) {
 };
 
 /**
- * Função que insere ou atualiza o recurso pessoa com um pedido ao servidor NODE.JS através do verbo POST ou PUT, usando pedidos assincronos e JSON
+ * Função que insere ou atualiza o recurso torneio com um pedido ao servidor NODE.JS através do verbo POST ou PUT, usando pedidos assincronos e JSON
  * @param {String} acao - controla qual a operação do CRUD queremos fazer
-  */
+ */
 Information.prototype.processingTorneio = function (acao) {
     const id = parseInt(document.getElementById("idTorneio").value);
     const name = document.getElementById("nomeTorneio").value;
@@ -469,13 +539,17 @@ Information.prototype.processingTorneio = function (acao) {
     const dataTorneio = document.getElementById("dataTorneio").value;
 
     const torneio = {
-        id: id, dataTorneio: dataTorneio, name: name, modalidade: modalidade, tipoTorneio: tipoTorneio,
-        capacidadeAtual: capacidadeAtual, capacidadeMax: capacidadeMax
+        id: id,
+        dataTorneio: dataTorneio,
+        name: name,
+        modalidade: modalidade,
+        tipoTorneio: tipoTorneio,
+        capacidadeAtual: capacidadeAtual,
+        capacidadeMax: capacidadeMax
     };
     const xhr = new XMLHttpRequest();
     xhr.responseType = "json";
     if (acao === "create") {
-        /** @todo Completar */
         xhr.onreadystatechange = function () {
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                 let newTorneio = new Torneio(xhr.response.insertId, name, modalidade, tipoTorneio, capacidadeAtual, capacidadeMax, dataTorneio);
@@ -485,7 +559,6 @@ Information.prototype.processingTorneio = function (acao) {
         };
         xhr.open("POST", "/torneio");
     } else if (acao === "update") {
-        /** @todo Completar */
         xhr.onreadystatechange = function () {
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                 info.torneios[info.torneios.findIndex(i => i.id === id)] = torneio;
@@ -499,12 +572,18 @@ Information.prototype.processingTorneio = function (acao) {
 
 };
 
+/**
+ * Processa a form da equipa
+ * @param {int} idTorneio - id dum torneio
+ */
 Information.prototype.processingEquipa = function (idTorneio) {
 
     const nome = document.getElementById('nomeEquipa').value;
     var torneio = getTorneioId(idTorneio);
     var equipas = getTorneioId(idTorneio).equipas;
-    const equipa = { name: nome };
+    const equipa = {
+        name: nome
+    };
     console.log(torneio.capacidadeAtual + " - " + torneio.capacidadeMaxima);
     if (torneio.capacidadeAtual !== torneio.capacidadeMaxima) {
         console.log("sadasdasd");
@@ -535,8 +614,10 @@ Information.prototype.processingEquipa = function (idTorneio) {
     }
 };
 /**
- * Função que apaga o recurso pessoa com ym pedido ao NODE.JS através do verbo DELETE, usando pedidos assincronos e JSON
-  */
+ * Função que apaga o recurso de uma equipa
+ * @param {int} idEquipa - id do torneio que a equipa pertence
+ * @param {int} idTorneio - id da equipa a remover
+ */
 Information.prototype.removeEquipa = function (idTorneio, idEquipa) {
     /** @todo Completar */
     const xhr = new XMLHttpRequest();
@@ -552,10 +633,11 @@ Information.prototype.removeEquipa = function (idTorneio, idEquipa) {
 };
 
 /**
- * Função que apaga o recurso pessoa com ym pedido ao NODE.JS através do verbo DELETE, usando pedidos assincronos e JSON
-  */
+ * Função que apaga o recurso de jogo
+ * @param {int} idTorneio -  id do torneio do jogo
+ * @param {int} idJogo - id do jogo a remover
+ */
 Information.prototype.removeJogo = function (idTorneio, idJogo) {
-    /** @todo Completar */
     const xhr = new XMLHttpRequest();
     var torneio = getTorneioId(idTorneio);
     xhr.open('DELETE', '/torneio/' + idTorneio + '/jogo/' + idJogo);
@@ -569,6 +651,11 @@ Information.prototype.removeJogo = function (idTorneio, idJogo) {
 };
 
 
+/**
+ * Funcçao que processa um form de jogo
+ * @param {int} idTorneio - id do torneio que o jogo pertece
+ * @param {int} idJogo - id do jogo a processar
+ */
 Information.prototype.processingGame = function (idTorneio, idJogo) {
 
 
@@ -584,7 +671,13 @@ Information.prototype.processingGame = function (idTorneio, idJogo) {
     let resultado1 = document.getElementById('resultado1').value;
     let resultado2 = document.getElementById('resultado2').value;
 
-    const jogo2 = { id: id, equipa1: equipa1, equipa2: equipa2, resultado1: resultado1, resultado2: resultado2 };
+    const jogo2 = {
+        id: id,
+        equipa1: equipa1,
+        equipa2: equipa2,
+        resultado1: resultado1,
+        resultado2: resultado2
+    };
 
     const xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
