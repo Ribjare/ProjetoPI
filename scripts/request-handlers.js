@@ -117,7 +117,6 @@ function getJogosFromTorneio(req, res) {
     let query = "SELECT Jogo.id, Jogo.equipa1, Jogo.equipa2, Jogo.PontosEquipa1, Jogo.PontosEquipa2 ";
     query += "FROM Jogo ";
     query += "where torneioId = ?";
-    console.log(idTorneio);
     connection.query(query, idTorneio, function (err, rows) {
         if (err) {
             res.json({ "message": "Error", "error": err });
@@ -377,7 +376,7 @@ function updateGame(req, res){
     let idTorneio = req.params.id;
     let resultado1 = req.body.resultado1;
     let resultado2 = req.body.resultado2;
-
+    console.log(idTorneio + " - "+ resultado1+"- "+resultado2);
     let connection = mysql.createConnection(options);
 
     let query = "UPDATE Jogo SET PontosEquipa1=?, PontosEquipa2=? WHERE id=?"

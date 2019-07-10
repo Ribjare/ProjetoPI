@@ -21,7 +21,10 @@ function Information(id) {
  * coloca a palavra "home" no div titulo e limpa o div informação
  */
 Information.prototype.showHome = function () {
-    document.getElementById("formTorneio").style.display = 'none';
+    document.getElementById('formTorneio').style.display = 'none';
+    document.getElementById('formEquipa').style.display = 'none';
+    document.getElementById('formJogo').style.display = 'none';
+    document.getElementById('formJogador').style.display = 'none';
     replaceChilds(this.id, document.createElement("div"));
     document.getElementById("intro").style.display = 'block';
 
@@ -31,6 +34,8 @@ Information.prototype.showHome = function () {
 Information.prototype.showTorneio = function () {
     document.getElementById('formTorneio').style.display = 'none';
     document.getElementById('formEquipa').style.display = 'none';
+    document.getElementById('formJogo').style.display = 'none';
+    document.getElementById('formJogador').style.display = 'none';
     document.getElementById("intro").style.display = 'none';
 
 
@@ -145,6 +150,8 @@ function getTorneioId(id) {
 
 Information.prototype.showTorneioDetalhes = function (idTorneio) {
     document.getElementById('formEquipa').style.display = 'none';
+    document.getElementById('formJogo').style.display = 'none';
+
 
     const table = document.createElement("table");
     table.appendChild(tableLine(new Jogo(), true));
@@ -243,7 +250,9 @@ Information.prototype.showTorneioDetalhes = function (idTorneio) {
         }
         if (idJogo) {
             replaceChilds('divTable', document.createElement('div'));
-            document.getElementById('formJogo').action = 'javascript:info.processingGame('+idTorneio+','+idJogo+')';
+            replaceChilds('divTable2', document.createElement('div'));
+
+            document.getElementById('formJogo').action = 'javascript:info.processingGame(' + idTorneio + ',' + idJogo + ')';
             document.getElementById('formJogo').style.display = 'flex';
             document.getElementById('formJogo').reset();
             document.getElementById('idJogo').value = idJogo;
@@ -312,7 +321,7 @@ Information.prototype.showEquipa = function (idEquipa, torneio) {
     function newPlayerEventHandler() {
         //console.log("not implemented");
         replaceChilds('daiv', document.createElement('div'));
-        document.getElementById('formJogador').action = 'javascript:info.processingGame(' + equipa.id + ',' + torneio.id + ');';
+        document.getElementById('formJogador').action = 'javascript:info.processingPlayer(' + equipa.id + ',' + torneio.id + ');';
         document.getElementById('formJogador').style.display = 'flex';
         document.getElementById('formJogador').reset;
     }
@@ -494,7 +503,9 @@ Information.prototype.processingEquipa = function (idTorneio) {
                 let newEquipa = new Equipa(xhr.response.insertId, nome);
                 torneio.equipas.push(newEquipa);
                 const xhr2 = new XMLHttpRequest();
+
                 xhr2.onreadystatechange = function () {
+
                     info.showTorneioDetalhes(idTorneio);
                 };
 
@@ -547,6 +558,8 @@ Information.prototype.removeJogo = function (idTorneio, idJogo) {
 
 
 Information.prototype.processingGame = function (idTorneio, idJogo) {
+
+
     var self = this;
 
     let id = document.getElementById('idJogo').value;
@@ -567,8 +580,9 @@ Information.prototype.processingGame = function (idTorneio, idJogo) {
     xhr.onreadystatechange = function () {
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
             torneio.jogos[torneio.jogos.findIndex(i => i.id === idJogo)] = jogo2;
-            
+            self.showTorneioDetalhes(idTorneio);
         }
     };
+    xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(jogo2));
 };
