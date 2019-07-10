@@ -3,12 +3,19 @@
     background-color: rgb(241, 240, 240);
     color: black
 }
-nav{
+/*nav{
+    display: flex;
     border-bottom:1px solid #EAEAEB;
     text-align:right;
-    height: 70px;
+    height: 100%;
     line-height: 70px;
-}
+    text-decoration: none;
+    justify-content: center;
+    font-size: 25px;
+    width: 100%;
+    flex-direction: row;
+    font-weight: normal;
+}*/
 header a{    color: black;
 }
 header {
@@ -43,67 +50,43 @@ h3 {
     line-height: 70px;
 
 }
-#togglelabel{
-margin: 0 40px 0 0;
-font-size: 26xp;
-line-height: 70px;
-display: none;
-width: 26px;
-float: right;
-}
-#toggle{
-  display:none;  
-}
-@media only screen and (max-width:500px){
-    #togglelabel {
-        display:block;
-        cursor: pointer;
-        
-    }
-    #menu{
-        text-align: center;
-        width: 100%;
-        display: none;
-    }
-    #menu a{
-        clear: right;
-        display: block;
-        border-bottom: 1px solid #EAEAEB;
-        margin: 0;
-    }
-    #toggle:checked + #menu{
-        display: block;
-    }
-}
 
-li {
+nav ul li {
     display: inline-flex;
     list-style: none;
     justify-content: space-around;
     letter-spacing: 2px;
-    padding: 10px;
+    padding: 10px 20px;
 }
-
-a {
+nav ul li:hover{
+    background-color:rgb(63, 1, 1);
+    transition: 0.9s;
+}
+nav ul li a {
     text-decoration: none;
     list-style-type: none;
 }
 
-nav {
-    text-decoration: none;
-    display: block;
+nav ul{
+    display: flex;
+    padding: 10px;
     justify-content: center;
+    list-style: none;
     font-size: 25px;
-    width: 100%;
-    flex-direction: row;
-    font-weight: normal;
 }
 
-#divTable {
+@media only screen and (max-width:662px){
+    nav ul{
+        height: 230px;
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+.divTable {
     display: flex;
     justify-content: center;
-
-
+    overflow-x:auto;
 }
 th{
     background-color: black;
