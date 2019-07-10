@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="utf-8">
     <meta name= "viewport" content="width-device-width, initial-scale=1.0">
@@ -12,10 +13,11 @@
     <script src="scripts/information.js"></script>
     <script src="scripts/main.js"></script>
 </head>
+
 <body>
     <header>
-    <h1><a id="menuHome" href="javascript:info.showHome();">Torneios Sociais</a></h1>
-    <h3>Os melhores torneios de sempre, à porta de sua casa</h3>
+        <h1><a id="menuHome" href="javascript:info.showHome();">Torneios Sociais</a></h1>
+        <h3>Os melhores torneios de sempre, à porta de sua casa</h3>
     </header>
     <nav>
         <ul id="menu">
@@ -27,7 +29,7 @@
     </nav>
     <main>
         <div id="divInformation"></div>
-        <form id="formTorneio" >
+        <form id="formTorneio">
             <input id="idTorneio" type="hidden">
             <label for="name">Nome do Torneio:</label>
             <input id="nomeTorneio" type="text">
@@ -38,11 +40,12 @@
             <input id="capacidadeAtual" type="hidden">
             <label for="capacidadeMax">Capacidade Maxima</label>
             <input id="capacidadeMaxTorneio" type="number">
-
+            <label for="dataTorneio">Data Torneio:</label>
+            <input id="dataTorneio" type="date">
             <input id="Save" type="submit" value="Save">
             <input id="clean" type="reset" value="Clean">
         </form>
-        <form id="formEquipa" >
+        <form id="formEquipa">
             <input id="idEquipa" type="hidden">
             <label for="nomeEquipa">Nome:</label>
             <input id="nomeEquipa" type="text">
@@ -51,15 +54,32 @@
             <input id="clean" type="reset" value="Clean">
         </form>
         <div id="intro">
-            <p>Este website é para a criação e gestão de torneios sociais para a modalidade de ténis com 2 tipos diferentes de torneios, eliminatorias e todos contra todos.</p> 
-            </div>
-        <from id="formJogo">
+            <p>Este website é para a criação e gestão de torneios sociais para a modalidade de ténis com 2 tipos
+                diferentes de torneios, eliminatorias e todos contra todos.</p>
+        </div>
+        <form id="formJogo">
             <input id="idJogo" type=hidden>
+            <input id="idEquipa1" type="hidden">
+            <input id="idEquipa2" type="hidden">
+            <label for="resultado1">Resultado Equipa 1:</label>
             <input id="resultado1" type="number">
+            <label for="resultado2">Resultado Equipa 2:</label>
             <input id="resultado2" type="number">
             <input type="submit">
             <input type="reset">
-        </from>
+        </form>
+        <form id="formJogador">
+            <input id="idJogador" type=hidden>
+            <label for="nomeJogador">Nome Jogador:</label>
+            <input id="nomeJogador" type="text">
+            <label for="numeroTelefone">Numero Telefone:</label>
+            <input id="numeroTelefone" type="text">
+            <label for="dataNascimento">Data Nascimento:</label>
+            <input id="dataNascimento" type="date">
+            <input type="submit">
+            <input type="reset">
+        </form>
     </main>
 </body>
-</html> 
+
+</html>

@@ -55,7 +55,6 @@ Torneio.prototype.formarJogos = function (funcao) {
     } else if (this.tipo == 2) {
         for (var i = 0; i < this.equipas.length; i++ , i++) {
             this.criarJogo(this.equipas[i].id, this.equipas[i + 1].id, funcao);
-            //console.log(i);
         }
     }
 };
@@ -78,6 +77,7 @@ Torneio.prototype.criarJogo = function (id1, id2, info) {
     xhr.send(JSON.stringify(jogo));
 };
 
+
 Torneio.prototype.getJogos = function () {
     var jogos = this.jogos;
     const xhr = new XMLHttpRequest();
@@ -91,4 +91,13 @@ Torneio.prototype.getJogos = function () {
         }
     };
     xhr.send();
+};
+
+Torneio.prototype.getTeamById = function (id) {
+    for (var i = 0; i < this.equipas.length; i++) {
+        if (this.equipas[i].id === id) {
+            return this.equipas[i];
+        }
+    }
+    return null;
 };

@@ -27,7 +27,7 @@ function getJogador(req, res) {
 function getTorneio(req, res) {
     let connection = mysql.createConnection(options);
     connection.connect();
-    let query = "SELECT id, name, dataTorneio, modalidade, tipoTorneio, capacidadeAtual, capacidadeMax FROM torneio";
+    let query = "SELECT id, name, DATE_FORMAT(dataTorneio, '%Y-%m-%d') as dataTorneio, modalidade, tipoTorneio, capacidadeAtual, capacidadeMax FROM torneio";
     connection.query(query, function (err, rows) {
         if (err) {
             res.json({ "message": "Error", "error": err });
@@ -154,16 +154,20 @@ function getEquipaFromTorneio(req, res) {
  * //maybe criar uma equipa automaticamente se nao existir???
  */
 function createUpdateJogador(req, res) {
-    let connection = mysql.createConnection(options);
+    let connection = mysql.createConnection(options);    
+    console.log("dasdasdsadsad");
+    console.log(req.body);
     let name = req.body.name;
     let birthday = req.body.birthDate;
     let nTelemovel = req.body.nTelemovel;
     let idEquipa = req.body.idEquipa;
-    let sql = (req.method === 'PUT') ? "UPDATE Jogador SET name = ?, birthdate = ?, nTelemovel=? , idEquipa = ? WHERE id = ?" : "INSERT INTO Jogador(name, birthdate, nTelemovel, idEquipa) VALUES (?,?,?,?)";
+
+    let sql = (req.method === 'PUT') ? "UPDATE Jogador SET name = ?, birthdate = ?, nTelemovel=? , idEquipa = ? WHERE id = ?" : "INSERT INTO Jogador(nome, birthdate, nTelemovel, idEquipa) VALUES (?,?,?,?)";
     connection.connect(function (err) {
         if (err) throw err;
         connection.query(sql, [name, birthday, nTelemovel, idEquipa, req.params.id], function (err, rows) {
             if (err) {
+                console.error(err);
                 res.sendStatus(500);
             } else {
                 res.send(rows);
@@ -179,10 +183,12 @@ function createUpdateTorneio(req, res) {
     let modalidade = req.body.modalidade;
     let torneio = req.body.tipoTorneio;
     let capMax = req.body.capacidadeMax;
-    let sql = (req.method === 'PUT') ? "UPDATE Torneio SET name = ?, modalidade = ?, tipoTorneio=?, capacidadeMax=? WHERE id = ?" : "INSERT INTO Torneio(name, modalidade, tipoTorneio, capacidadeMax) VALUES (?,?,?,?)";
+    let dataTorneio = req.body.dataTorneio;
+
+    let sql = (req.method === 'PUT') ? "UPDATE Torneio SET name = ?, modalidade = ?, tipoTorneio=?, capacidadeMax=?, dataTorneio=? WHERE id = ?" : "INSERT INTO Torneio(name, modalidade, tipoTorneio, capacidadeMax, dataTorneio) VALUES (?,?,?,?,?)";
     connection.connect(function (err) {
         if (err) throw err;
-        connection.query(sql, [name, modalidade, torneio, capMax, req.params.id], function (err, rows) {
+        connection.query(sql, [name, modalidade, torneio, capMax, dataTorneio, req.params.id], function (err, rows) {
             if (err) {
                 res.sendStatus(500);
             } else {
@@ -312,7 +318,7 @@ function getJogadorPerTeam(req, res) {
     let idEquipa = req.params.id;
     let connection = mysql.createConnection(options);
     connection.connect();
-    let query = "SELECT j.id, j.nome, j.birthDate, j.nTelemovel ";
+    let query = "SELECT j.id, j.nome, DATE_FORMAT(j.birthDate, '%Y-%m-%d') as birthDate, j.nTelemovel ";
     query += "from Jogador j ";
     query += "join equipa e on j.idEquipa = e.id ";
     query += "where e.id = ?";
@@ -321,7 +327,7 @@ function getJogadorPerTeam(req, res) {
         if (err) {
             res.json({ "message": "Error", "error": err });
         } else {
-            res.json({ "message": "Success", "equipa": rows });
+            res.json({ "message": "Success", "jogador": rows });
         }
     });
 }
@@ -346,17 +352,14 @@ function getGamesPerTeam(req, res) {
 
 }
 
-function createGame(req, res){
+function createGame(req, res) {
     let equipa1 = req.body.equipa1;
     let equipa2 = req.body.equipa2;
     let idTorneio = req.body.idTorneio;
 
-    console.log(equipa1 +" "+equipa2+" "+ idTorneio);
-
     let arrayEquipas = req.body;
-    console.log(arrayEquipas);
     let connection = mysql.createConnection(options);
-    
+
     let query = "INSERT INTO Jogo(equipa1, equipa2, torneioId) VALUES(?, ?, ?)";
     connection.connect(function (err) {
         if (err) throw err;
@@ -370,8 +373,28 @@ function createGame(req, res){
     });
 }
 
+function updateGame(req, res){
+    let idTorneio = req.params.id;
+    let resultado1 = req.body.resultado1;
+    let resultado2 = req.body.resultado2;
 
-module.exports.createGame=createGame;
+    let connection = mysql.createConnection(options);
+
+    let query = "UPDATE Jogo SET PontosEquipa1=?, PontosEquipa2=? WHERE id=?"
+    connection.connect(function (err) {
+        if (err) throw err;
+        connection.query(query, [resultado1, resultado2, idTorneio], function (err, rows) {
+            if (err) {
+                res.sendStatus(500);
+            } else {
+                res.send(rows);
+            }
+        });
+    });
+}
+
+module.exports.updateGame=updateGame;
+module.exports.createGame = createGame;
 
 module.exports.deleteEquipaTorneio = deleteEquipaTorneio;
 module.exports.joinEquipaTorneio = joinEquipaTorneio;

@@ -32,10 +32,10 @@ app.get('/torneio/:id/jogo', requestHandlers.getJogosFromTorneio);
 app.get("/torneio/:id/equipa", requestHandlers.getEquipaFromTorneio);
 
 //to get games per team
-app.get("/jogo/equipa/:id",requestHandlers.getGamesPerTeam);
+app.get("/equipa/:id/jogos",requestHandlers.getGamesPerTeam);
 
 //to get players of a team
-app.get("/jogador/equipa/:id", requestHandlers.getJogadorPerTeam);
+app.get("/equipa/:id/jogadores", requestHandlers.getJogadorPerTeam);
 
 //to create a player
 app.post("/jogador", requestHandlers.createUpdateJogador);
@@ -62,6 +62,7 @@ app.put("/equipa/:id", requestHandlers.createUpdateEquipa);
 app.put("/torneio/:id", requestHandlers.createUpdateTorneio);
 
 //to update a game
+app.put("/game/:id", requestHandlers.updateGame);
 
 //to delete a player
 app.delete("/jogador/:id", requestHandlers.removeJogador);

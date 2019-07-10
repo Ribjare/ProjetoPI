@@ -8,10 +8,9 @@
 * @param {String} birthDay - modalidade do torneio
 * @param {String} nTelemovel - tipo do torneio
 */
-function jogador(id, name, birthDay, nTelemovel, equipa) {
+function Jogador(id, name, birthDay, nTelemovel) {
     this.id = id;
     this.name = name;
     this.birthDay = birthDay;
     this.nTelemovel = nTelemovel;
-    this.idEquipa = equipa;
-};
+}
