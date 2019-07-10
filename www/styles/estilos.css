@@ -77,7 +77,7 @@ nav ul{
 
 @media only screen and (max-width:823px){
     nav ul{
-        height: 310px;
+        height: 340px;
         flex-direction: column;
         text-align: center;
     }
