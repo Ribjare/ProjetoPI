@@ -5,8 +5,11 @@
 * @constructs Torneio
 * @param {int} id - id do torneio
 * @param {String} name - nome d o torneio
-* @param {String} modalidade - modalidade do torneio
-* @param {String} tipo - tipo do torneio
+* @param {int} modalidade - modalidade do torneio
+* @param {int} tipo - tipo do torneio
+* @param {int} capacidadeAtual - capacidade atual do torneio
+* @param {int} capacidadeMaxima - capacidade maxima do torneio
+* @param {Date} data - data do torneio
 */
 function Torneio(id, name, modalidade, tipo, capacidadeAtual, capacidadeMaxima, data) {
     this.id = id;

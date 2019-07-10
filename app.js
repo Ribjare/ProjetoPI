@@ -8,10 +8,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("www"));
 
-// Commands
+// para retornar todas as modalidade 
 app.get('/modalidades', requestHandlers.getModalidade);
 
-
+// to get all types of tornaments
 app.get('/tipos', requestHandlers.getTipoTorneio);
 
 //to get all players

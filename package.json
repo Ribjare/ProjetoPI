@@ -5,6 +5,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
+    "jsdoc": "git+https://github.com/jsdoc/jsdoc.git",
     "jshint": "^2.10.2",
     "mysql": "^2.17.1"
   },
