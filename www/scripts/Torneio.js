@@ -22,11 +22,9 @@ function Torneio(id, name, modalidade, tipo, capacidadeAtual, capacidadeMaxima, 
     this.capacidadeMaxima = capacidadeMaxima;
 
 };
-
-function randomDate(start, end) {
-    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-}
-
+/**
+ * Faz um pedido ao servidor que retorna todas as equipas de um torneio
+ */
 Torneio.prototype.getEquipa = function () {
     var self = this;
     const xhr = new XMLHttpRequest();
@@ -43,6 +41,9 @@ Torneio.prototype.getEquipa = function () {
     xhr.send();
 };
 
+/**
+ * Função para formar os jogos dependendo do tipo de torneio
+ */
 Torneio.prototype.formarJogos = function (funcao) {
     // se for da forma de uma liga, isto é, todos vao jogar contra todos pelo menos uma vez
     if (this.tipo == 1) {
@@ -60,6 +61,9 @@ Torneio.prototype.formarJogos = function (funcao) {
 };
 
 
+/**
+ * Faz um pedido ao servidor para a criação de um jogo
+ */
 Torneio.prototype.criarJogo = function (id1, id2, info) {
     const xhr = new XMLHttpRequest();
     var jogo = { "equipa1": id1, "equipa2": id2, "idTorneio": this.id };
@@ -78,6 +82,9 @@ Torneio.prototype.criarJogo = function (id1, id2, info) {
 };
 
 
+/**
+ * Faz um pedido ao servidor e retorna todos os jogos de um torneio
+ */
 Torneio.prototype.getJogos = function () {
     var jogos = this.jogos;
     const xhr = new XMLHttpRequest();
@@ -93,6 +100,10 @@ Torneio.prototype.getJogos = function () {
     xhr.send();
 };
 
+/**
+ * Retorna uma equipa
+ * @param {int} id - id da equipa a procurar
+ */
 Torneio.prototype.getTeamById = function (id) {
     for (var i = 0; i < this.equipas.length; i++) {
         if (this.equipas[i].id === id) {

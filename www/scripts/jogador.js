@@ -4,7 +4,7 @@
 * @class Estrutura com capacidade de armazenar o estado de uma entidade pessoa 
 * @constructs jogador
 * @param {int} id - id do torneio
-* @param {String} name - nome d o torneio
+* @param {String} name - nome do torneio
 * @param {String} birthDay - modalidade do torneio
 * @param {String} nTelemovel - tipo do torneio
 */

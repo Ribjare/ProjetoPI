@@ -4,8 +4,8 @@ const options = require("./connection-options.json");
 
 /**
  * Função para retornar a lista de pessoas da BD.
- * @param {*} req 
- * @param {*} res 
+ * @param {*} req - pedido
+ * @param {*} res - resposta
  */
 function getJogador(req, res) {
     let connection = mysql.createConnection(options);
@@ -150,7 +150,8 @@ function getEquipaFromTorneio(req, res) {
 }
 /**
  * Creates or updates a player
- * //maybe criar uma equipa automaticamente se nao existir???
+ * @param {*} req 
+ * @param {*} res 
  */
 function createUpdateJogador(req, res) {
     let connection = mysql.createConnection(options);    
@@ -174,7 +175,11 @@ function createUpdateJogador(req, res) {
         });
     });
 }
-
+/**
+ * Creates or updates a tournament 
+ * @param {*} req 
+ * @param {*} res 
+ */
 function createUpdateTorneio(req, res) {
     let connection = mysql.createConnection(options);
     let name = req.body.name;
@@ -196,6 +201,11 @@ function createUpdateTorneio(req, res) {
         });
     });
 }
+/**
+ * Deletes a tournament
+ * @param {*} req 
+ * @param {*} res 
+ */
 function deleteTorneio(req, res) {
     let query = 'DELETE FROM torneio WHERE id = ?';
     let connection = mysql.createConnection(options);
@@ -210,7 +220,11 @@ function deleteTorneio(req, res) {
         });
     });
 }
-
+/**
+ * Creates or updates a team
+ * @param {*} req 
+ * @param {*} res 
+ */
 function createUpdateEquipa(req, res) {
     let connection = mysql.createConnection(options);
     let name = req.body.name;
@@ -228,7 +242,11 @@ function createUpdateEquipa(req, res) {
         });
     });
 }
-
+/**
+ * Acrescenta uma equipa a um torneio
+ * @param {*} req 
+ * @param {*} res 
+ */
 function joinEquipaTorneio(req, res) {
     let connection = mysql.createConnection(options);
     let idTorneio = req.params.idTorneio;
@@ -245,7 +263,11 @@ function joinEquipaTorneio(req, res) {
         });
     });
 }
-
+/**
+ * Deletes a team from a tournament
+ * @param {*} req 
+ * @param {*} res 
+ */
 function deleteEquipaTorneio(req, res) {
     let connection = mysql.createConnection(options);
     let idTorneio = req.params.idTorneio;
@@ -263,7 +285,11 @@ function deleteEquipaTorneio(req, res) {
     });
 
 }
-
+/**
+ * Deletes a game from a tournament
+ * @param {*} req 
+ * @param {*} res 
+ */
 function deleteJogoTorneio(req, res) {
     let connection = mysql.createConnection(options);
     let idTorneio = req.params.idTorneio;
@@ -283,6 +309,11 @@ function deleteJogoTorneio(req, res) {
 }
 module.exports.deleteJogoTorneio = deleteJogoTorneio;
 
+/**
+ * Deletes a team
+ * @param {*} req 
+ * @param {*} res 
+ */
 function deleteEquipa(req, res) {
     let query = 'DELETE FROM equipa WHERE id = ?';
     let connection = mysql.createConnection(options);
@@ -297,7 +328,11 @@ function deleteEquipa(req, res) {
         });
     });
 }
-
+/**
+ * Removes a player from database
+ * @param {*} req 
+ * @param {*} res 
+ */
 function removeJogador(req, res) {
     let query = 'DELETE FROM jogador WHERE id = ?';
     let connection = mysql.createConnection(options);
@@ -313,6 +348,11 @@ function removeJogador(req, res) {
     });
 }
 
+/**
+ * Procurar todos os jogadores de uma determinada equipa
+ * @param {*} req 
+ * @param {*} res 
+ */
 function getJogadorPerTeam(req, res) {
     let idEquipa = req.params.id;
     let connection = mysql.createConnection(options);
@@ -331,6 +371,11 @@ function getJogadorPerTeam(req, res) {
     });
 }
 
+/**
+ * Procura todos os jogos de uma determinada equipa
+ * @param {*} req 
+ * @param {*} res 
+ */
 function getGamesPerTeam(req, res) {
     let idEquipa = req.params.id;
     let connection = mysql.createConnection(options);
@@ -350,7 +395,11 @@ function getGamesPerTeam(req, res) {
     });
 
 }
-
+/**
+ * Creates a game in a tournament
+ * @param {*} req 
+ * @param {*} res 
+ */
 function createGame(req, res) {
     let equipa1 = req.body.equipa1;
     let equipa2 = req.body.equipa2;
@@ -371,7 +420,11 @@ function createGame(req, res) {
         });
     });
 }
-
+/**
+ * Updates a game in a tournament
+ * @param {*} req 
+ * @param {*} res 
+ */
 function updateGame(req, res){
     let idTorneio = req.params.id;
     let resultado1 = req.body.resultado1;
