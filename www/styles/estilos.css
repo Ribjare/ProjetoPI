@@ -3,6 +3,7 @@
     background-color: rgb(241, 240, 240);
     color: black
 }
+
 /*nav{
     display: flex;
     border-bottom:1px solid #EAEAEB;
@@ -16,8 +17,10 @@
     flex-direction: row;
     font-weight: normal;
 }*/
-header a{    color: black;
+header a {
+    color: black;
 }
+
 header {
     background-color: seashell;
     padding: 20px;
@@ -36,14 +39,15 @@ h3 {
     justify-content: center
 }
 
-#menu{
+#menu {
     display: flex;
     justify-content: space-evenly;
     background-color: darkred;
     margin: 0%;
     border: 1px solid black;
 }
-#menu a{
+
+#menu a {
     text-decoration: none;
     color: white;
     margin: 0 10px;
@@ -58,16 +62,18 @@ nav ul li {
     letter-spacing: 2px;
     padding: 10px 20px;
 }
-nav ul li:hover{
-    background-color:rgb(63, 1, 1);
+
+nav ul li:hover {
+    background-color: rgb(63, 1, 1);
     transition: 0.9s;
 }
+
 nav ul li a {
     text-decoration: none;
     list-style-type: none;
 }
 
-nav ul{
+nav ul {
     display: flex;
     padding: 10px;
     justify-content: center;
@@ -75,8 +81,8 @@ nav ul{
     font-size: 25px;
 }
 
-@media only screen and (max-width:823px){
-    nav ul{
+@media only screen and (max-width:823px) {
+    nav ul {
         height: 340px;
         flex-direction: column;
         text-align: center;
@@ -86,15 +92,18 @@ nav ul{
 .divTable {
     display: flex;
     justify-content: center;
-    overflow-x:auto;
+    overflow-x: auto;
 }
-th{
+
+th {
     background-color: black;
     color: white;
 }
+
 table,
 th,
-td {        border-collapse: collapse;
+td {
+    border-collapse: collapse;
 
     border: 1px solid black;
 }
@@ -127,7 +136,6 @@ td {        border-collapse: collapse;
     display: none;
     flex-direction: column;
     font-size: 20px;
-    background-color: green;
     margin-top: 50px;
     margin-bottom: 50px;
     margin-left: 45%;
@@ -135,11 +143,10 @@ td {        border-collapse: collapse;
     width: 15%;
 }
 
-#formEquipa {
+#formEquipa, #formJogo, #formJogador{
     display: none;
     font-size: 20px;
     flex-direction: column;
-    background-color: aqua;
     margin-left: 45%;
     width: 15%;
 }
@@ -155,6 +162,6 @@ td {        border-collapse: collapse;
     display: none;
 }
 
-#formJogador{
+#formJogador {
     display: none;
 }

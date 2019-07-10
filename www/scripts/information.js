@@ -30,6 +30,18 @@ Information.prototype.showHome = function () {
 
 };
 
+Information.prototype.showMeusTorneios = function(){
+    document.getElementById('formTorneio').style.display = 'none';
+    document.getElementById('formEquipa').style.display = 'none';
+    document.getElementById('formJogo').style.display = 'none';
+    document.getElementById('formJogador').style.display = 'none';
+    document.getElementById("intro").style.display = 'none';
+
+    var div = document.createElement('div');
+    div.innerText="Pagina nao desenvolvida, seria uma pagina designada ao utilizador registados";
+    replaceChilds(this.id, div);
+};
+
 
 Information.prototype.showTorneio = function () {
     document.getElementById('formTorneio').style.display = 'none';
@@ -67,7 +79,7 @@ Information.prototype.showTorneio = function () {
         /** @todo Completar */
         replaceChilds('divTable', document.createElement('div')); //limpar a table
         document.getElementById('formTorneio').action = 'javascript:info.processingTorneio("create");';
-        document.getElementById('formTorneio').style.display = 'block';
+        document.getElementById('formTorneio').style.display = 'flex';
         document.getElementById('formTorneio').reset();
         document.getElementById('modalidadeTorneio').innerHTML = '';
         for (const c of self.modalidades) {
